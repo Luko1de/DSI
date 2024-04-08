@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testes/signUpPage.dart';
 
 class LoginPage extends StatelessWidget {
   @override
@@ -155,7 +156,9 @@ class LoginPage extends StatelessWidget {
               height: 40,
               alignment: Alignment.center,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder:(context) => SignUpPage(),),);
+                },
                 child: Text(
                   "Cadastre-se",
                   textAlign: TextAlign.center,
