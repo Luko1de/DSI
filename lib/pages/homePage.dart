@@ -12,64 +12,96 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          title: Text('MovieBox'),
-          centerTitle: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        title: Text('MovieBox'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showSearch(
+                context: context,
+                delegate: CustomSearchDelegate(),
+              );
+            },
+            icon: const Icon(Icons.search),
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        physics: BouncingScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Recomendados',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ),
+            CarouselSlider.builder(
+              itemCount: 10,
+              options: CarouselOptions(
+                height: 250,
+                viewportFraction: 0.55,
+              ),
+              itemBuilder:
+                  (BuildContext context, int index, int pageViewIndex) {
+                return Container(
+                  height: 250,
+                  width: 175,
+                  color: Colors.amber,
+                );
+              },
+            ),
+          ],
         ),
-        body: SingleChildScrollView(
-            physics: BouncingScrollPhysics(),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text('Recomendados'),
-              SizedBox(height: 10),
-              SizedBox(
-                width: double.infinity,
-                child: CarouselSlider.builder(
-                  itemCount: 10,
-                  options: CarouselOptions(
-                    height: 250,
-                    viewportFraction: 0.55,
-                    pageSnapping: true,
-                  ),
-                  itemBuilder:
-                      (BuildContext context, int index, int pageViewIndex) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        height: 300,
-                        width: 200,
-                        child: Image.asset('assets/homem_aranha.jpeg'),
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const SizedBox(height: 32),
-              Text('Últimos Avaliados'),
-              SizedBox(height: 10),
-              SizedBox(
-                width: double.infinity,
-                child: CarouselSlider.builder(
-                  itemCount: 10,
-                  options: CarouselOptions(
-                    height: 250,
-                    viewportFraction: 0.55,
-                    pageSnapping: true,
-                  ),
-                  itemBuilder:
-                      (BuildContext context, int index, int pageViewIndex) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Container(
-                        height: 300,
-                        width: 200,
-                        child: Image.asset('assets/homem_aranha.jpeg'),
-                      ),
-                    );
-                  },
-                ),
-              ),
-            ])));
+      ),
+    );
+  }
+}
+
+class CustomSearchDelegate extends SearchDelegate {
+  List<String> searchTerms = ["Movie 1", "Movie 2", "Movie 3"];
+
+  @override
+  List<Widget> buildActions(BuildContext context) {
+    // Lista de ações para a barra de pesquisa.
+    return [];
+  }
+
+  @override
+  Widget buildLeading(BuildContext context) {
+    // Ícone de voltar para a barra de pesquisa.
+    return IconButton(
+      icon: Icon(Icons.arrow_back),
+      onPressed: () {
+        close(context, null);
+      },
+    );
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    // Lógica para exibir resultados de pesquisa.
+    return Container();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    // Lógica para exibir sugestões de pesquisa.
+    return ListView.builder(
+      itemCount: searchTerms.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(searchTerms[index]),
+          onTap: () {
+            query = searchTerms[index];
+            showResults(context);
+          },
+        );
+      },
+    );
   }
 }

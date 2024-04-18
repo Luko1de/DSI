@@ -1,31 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:testes/pages/signUpPage.dart';
-import 'package:testes/pages/homePage.dart';
+import 'homePage.dart'; // Certifique-se de importar a classe HomePage
+import 'signUpPage.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.only(
-          top: 60,
-          left: 40,
-          right: 40,
-        ),
+        padding: EdgeInsets.only(top: 60, left: 40, right: 40),
         color: Colors.white,
         child: ListView(
-          children: <Widget>[
+          children: [
             SizedBox(
               width: 128,
               height: 128,
               child: Image.asset("assets/logo.png"),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 20),
             TextFormField(
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "E-mail",
                 labelStyle: TextStyle(
                   color: Colors.black38,
@@ -33,17 +28,13 @@ class LoginPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
+              style: TextStyle(fontSize: 20),
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 10),
             TextFormField(
               keyboardType: TextInputType.text,
               obscureText: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Senha",
                 labelStyle: TextStyle(
                   color: Colors.black38,
@@ -51,129 +42,61 @@ class LoginPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: const TextStyle(
-                fontSize: 20,
-              ),
+              style: TextStyle(fontSize: 20),
             ),
             Container(
               height: 40,
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {},
-                child: const Text(
-                  "Recuperar Senha",
-                  textAlign: TextAlign.right,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              height: 40,
-              alignment: Alignment.center,
-              child: TextButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ),
-                  );
+                  // Lógica para recuperar senha
                 },
-                child: const Text(
-                  "Login",
-                  textAlign: TextAlign.center,
-                ),
+                child: Text("Recuperar Senha", textAlign: TextAlign.right),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            SizedBox(height: 40),
             Container(
               height: 60,
               alignment: Alignment.center,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   stops: [0.3, 1],
-                  colors: [
-                    Color(0xFF87CEEB),
-                    Color(0xFF0000FF),
-                  ],
+                  colors: [Color(0xFF78559C), Color(0xFFDCADD0)],
                 ),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
+                borderRadius: BorderRadius.all(Radius.circular(5)),
               ),
               child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  // Navegar para HomePage ao clicar no botão de login
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomePage()),
+                  );
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
+                  children: [
                     Container(
-                      child: SizedBox(
-                        child: Image.asset('assets/google.png'),
-                        height: 28,
-                        width: 28,
-                      ),
-                    ), // Ícone
-                    const Text(
-                      "Login com Google",
+                      height: 28,
+                      width: 28,
+                      child: Image.asset('assets/google.png'),
+                    ),
+                    Text(
+                      "Login",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                         fontSize: 20,
                       ),
-                      textAlign: TextAlign.center,
                     ),
-                    const SizedBox(), // Espaço para alinhar corretamente
+                    SizedBox.shrink(), // Espaço para alinhamento
                   ],
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
-              height: 60,
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xFF3b5998),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: SizedBox(
-                        child: Image.asset('assets/X.png'),
-                        height: 28,
-                        width: 28,
-                      ),
-                    ), // Ícone
-                    const Text(
-                      "Login com X",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(), // Espaço para alinhar corretamente
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
+            SizedBox(height: 20),
             Container(
               height: 40,
               alignment: Alignment.center,
@@ -181,12 +104,10 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                      builder: (context) => SignUpPage(),
-                    ),
+                    MaterialPageRoute(builder: (context) => SignUpPage()),
                   );
                 },
-                child: const Text(
+                child: Text(
                   "Cadastre-se",
                   textAlign: TextAlign.center,
                 ),
