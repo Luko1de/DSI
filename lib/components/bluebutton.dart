@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class BlueButton extends StatelessWidget {
+class PurpleButton extends StatelessWidget {
   final Function()? onTap;
 
-  const BlueButton({super.key, required this.onTap});
+  const PurpleButton({super.key, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
