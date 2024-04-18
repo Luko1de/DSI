@@ -14,8 +14,10 @@ class SuspendedMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: DropdownButton<String>(
-        items: <String>['Masculino', 'Feminino', 'Outro']
+      child: Container(
+        width: double.maxFinite,
+        child:DropdownButton<String>(
+        items: <String>['Masculino', 'Feminino', 'Não Binário', 'Outro']
             .map<DropdownMenuItem<String>>((String value) {
           return DropdownMenuItem<String>(
             value: value,
@@ -25,6 +27,7 @@ class SuspendedMenu extends StatelessWidget {
         onChanged: (String? value) {
           // Você pode adicionar o código desejado aqui para lidar com a mudança de valor
         },
+        ),
       ),
     );
   }
