@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testes/components/bluebutton.dart';
+import 'package:testes/components/puplebutton.dart';
 import 'package:testes/components/suspendedmenu.dart';
 import 'package:testes/components/textfield.dart';
 
@@ -8,35 +8,33 @@ class SignUpPage extends StatelessWidget {
 
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
+  final emailController = TextEditingController();
+  final birthController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Colors.white,
       body: SafeArea(
         child:Column(
           children: [
-            const SizedBox(height: 50),
-          
-            const Icon(
-              Icons.person,
-              size: 100,
+            SizedBox(
+              width: 360,
+              height: 48,
+              child: Image.asset('assets/logosignup.png'),
             ),
-
-        SizedBox(height: 50),
-
-        Text(
-          "Bem vindo ao MoviesBox!",
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color:Colors.grey[700],
-        ),
-        ),
 
         const SizedBox(height: 25),
 
         MyTextField(
+            decoration: InputDecoration(
+            labelText: 'Nome Completo',
+            labelStyle: TextStyle(
+              color: Colors.black38,
+              fontWeight: FontWeight.w400,
+              fontSize: 20,
+            ),
+          ),
           controller: usernameController,
           hintText: 'Nome Completo',
           obscureText: false,
@@ -45,7 +43,15 @@ class SignUpPage extends StatelessWidget {
         const SizedBox(height: 10),
 
         MyTextField(
-          controller: usernameController,
+            decoration: InputDecoration(
+            labelText: 'E-mail',
+            labelStyle: TextStyle(
+              color: Colors.black38,
+              fontWeight: FontWeight.w400,
+              fontSize: 20,
+            ),
+          ),
+          controller: emailController,
           hintText: 'E-mail',
           obscureText: false,
         ),
@@ -53,6 +59,14 @@ class SignUpPage extends StatelessWidget {
         const SizedBox(height: 10),
 
         MyTextField(
+          decoration: InputDecoration(
+            labelText: 'Senha',
+            labelStyle: TextStyle(
+              color: Colors.black38,
+              fontWeight: FontWeight.w400,
+              fontSize: 20,
+            ),
+          ),
           controller: passwordController, 
           hintText: 'Senha', 
           obscureText: true
@@ -61,9 +75,17 @@ class SignUpPage extends StatelessWidget {
         const SizedBox(height: 10),
 
         MyTextField(
-          controller: passwordController, 
-          hintText: 'Confirme a senha', 
-          obscureText: true
+            decoration: InputDecoration(
+            labelText: 'Data de Nascimento',
+            labelStyle: TextStyle(
+              color: Colors.black38,
+              fontWeight: FontWeight.w400,
+              fontSize: 20,
+            ),
+          ),
+          controller: birthController, 
+          hintText: '__/__/____', 
+          obscureText: false
           ),
 
         const SizedBox(height: 10),
@@ -74,7 +96,7 @@ class SignUpPage extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          BlueButton(onTap: () {},),
+          PurpleButton(onTap: () {},),
 
           ],
         ),
