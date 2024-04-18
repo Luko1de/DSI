@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:testes/pages/signUpPage.dart';
-import 'package:testes/pages/homePage.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: const EdgeInsets.only(
+        padding: EdgeInsets.only(
           top: 60,
           left: 40,
           right: 40,
@@ -20,12 +18,12 @@ class LoginPage extends StatelessWidget {
               height: 128,
               child: Image.asset("assets/logo.png"),
             ),
-            const SizedBox(
+            SizedBox(
               height: 20,
             ),
             TextFormField(
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "E-mail",
                 labelStyle: TextStyle(
                   color: Colors.black38,
@@ -33,17 +31,17 @@ class LoginPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 10,
             ),
             TextFormField(
               keyboardType: TextInputType.text,
               obscureText: true,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: "Senha",
                 labelStyle: TextStyle(
                   color: Colors.black38,
@@ -51,7 +49,7 @@ class LoginPage extends StatelessWidget {
                   fontSize: 20,
                 ),
               ),
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 20,
               ),
             ),
@@ -60,47 +58,26 @@ class LoginPage extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {},
-                child: const Text(
+                child: Text(
                   "Recuperar Senha",
                   textAlign: TextAlign.right,
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            Container(
+            SizedBox(
               height: 40,
-              alignment: Alignment.center,
-              child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => HomePage(),
-                    ),
-                  );
-                },
-                child: const Text(
-                  "Login",
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 20,
             ),
             Container(
               height: 60,
               alignment: Alignment.center,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   stops: [0.3, 1],
                   colors: [
-                    Color(0xFF87CEEB),
-                    Color(0xFF0000FF),
+                    Color(0xFF78559C),
+                    Color(0xFFDCADD0),
                   ],
                 ),
                 borderRadius: BorderRadius.all(
@@ -119,8 +96,8 @@ class LoginPage extends StatelessWidget {
                         width: 28,
                       ),
                     ), // Ícone
-                    const Text(
-                      "Login com Google",
+                    Text(
+                      "Login",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -128,65 +105,23 @@ class LoginPage extends StatelessWidget {
                       ),
                       textAlign: TextAlign.center,
                     ),
-                    const SizedBox(), // Espaço para alinhar corretamente
+                    SizedBox(), // Espaço para alinhar corretamente
                   ],
                 ),
               ),
             ),
-            const SizedBox(
+            SizedBox(
               height: 20,
             ),
-            Container(
-              height: 60,
-              alignment: Alignment.center,
-              decoration: const BoxDecoration(
-                color: Color(0xFF3b5998),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(5),
-                ),
-              ),
-              child: TextButton(
-                onPressed: () {},
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      child: SizedBox(
-                        child: Image.asset('assets/X.png'),
-                        height: 28,
-                        width: 28,
-                      ),
-                    ), // Ícone
-                    const Text(
-                      "Login com X",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(), // Espaço para alinhar corretamente
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(
+            SizedBox(
               height: 10,
             ),
             Container(
               height: 40,
               alignment: Alignment.center,
               child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SignUpPage(),
-                    ),
-                  );
-                },
-                child: const Text(
+                onPressed: () {},
+                child: Text(
                   "Cadastre-se",
                   textAlign: TextAlign.center,
                 ),
