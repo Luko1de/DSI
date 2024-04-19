@@ -9,6 +9,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0; // Índice da barra de navegação inferior
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,7 +53,7 @@ class _HomePageState extends State<HomePage> {
                 return Container(
                   height: 250,
                   width: 175,
-                  color: Colors.amber,
+                  child: Image.asset('assets/homem_aranha.jpeg'),
                 );
               },
             ),
@@ -62,7 +64,24 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Color.fromRGBO(220, 173, 208, 1.0),
         selectedItemColor: Color.fromRGBO(121, 85, 156, 1.0),
         unselectedItemColor: Color.fromRGBO(121, 85, 156, 1.0),
-        items: <BottomNavigationBarItem>[
+        currentIndex:
+            _currentIndex, // Define o índice atual da barra de navegação
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+          // Adicione a lógica de navegação para cada item aqui
+          if (index == 0) {
+            // Navegue para a tela inicial
+          } else if (index == 1) {
+            // Navegue para a tela de filmes
+          } else if (index == 2) {
+            // Navegue para a tela de perfil
+          } else if (index == 3) {
+            // Navegue para a tela de sair
+          }
+        },
+        items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Início',
@@ -90,13 +109,20 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   List<Widget> buildActions(BuildContext context) {
-    // Lista de ações para a barra de pesquisa.
-    return [];
+    // Lista de ações para a barra de pesquisa
+    return [
+      IconButton(
+        icon: Icon(Icons.clear),
+        onPressed: () {
+          query = '';
+        },
+      ),
+    ];
   }
 
   @override
   Widget buildLeading(BuildContext context) {
-    // Ícone de voltar para a barra de pesquisa.
+    // Ícone de voltar para a barra de pesquisa
     return IconButton(
       icon: Icon(Icons.arrow_back),
       onPressed: () {
@@ -107,20 +133,26 @@ class CustomSearchDelegate extends SearchDelegate {
 
   @override
   Widget buildResults(BuildContext context) {
-    // Lógica para exibir resultados de pesquisa.
-    return Container();
+    // Lógica para exibir resultados de pesquisa
+    // Substitua pelo código necessário para exibir resultados com base na consulta
+    return Center(
+      child: Text('Resultados para: $query'),
+    );
   }
 
   @override
   Widget buildSuggestions(BuildContext context) {
-    // Lógica para exibir sugestões de pesquisa.
+    // Lógica para exibir sugestões de pesquisa
+    final suggestions =
+        searchTerms.where((term) => term.contains(query)).toList();
+
     return ListView.builder(
-      itemCount: searchTerms.length,
+      itemCount: suggestions.length,
       itemBuilder: (context, index) {
         return ListTile(
-          title: Text(searchTerms[index]),
+          title: Text(suggestions[index]),
           onTap: () {
-            query = searchTerms[index];
+            query = suggestions[index];
             showResults(context);
           },
         );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:testes/pages/signUpPage.dart';
-import 'homePage.dart'; // Certifique-se de importar a classe HomePage
+import 'homePage.dart';
 import 'signUpPage.dart';
 
 class LoginPage extends StatelessWidget {
@@ -8,16 +7,16 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.only(top: 60, left: 40, right: 40),
+        padding: const EdgeInsets.only(top: 60, left: 40, right: 40),
         color: Colors.white,
         child: ListView(
           children: [
             SizedBox(
               width: 128,
               height: 128,
-              child: Image.asset("assets/logo.png"),
+              child: Image.asset("assets/google.png"),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
@@ -30,7 +29,7 @@ class LoginPage extends StatelessWidget {
               ),
               style: TextStyle(fontSize: 20),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             TextFormField(
               keyboardType: TextInputType.text,
               obscureText: true,
@@ -49,12 +48,13 @@ class LoginPage extends StatelessWidget {
               alignment: Alignment.centerRight,
               child: TextButton(
                 onPressed: () {
-                  // Lógica para recuperar senha
+                  // Lógica para recuperar senha (adicionar se necessário)
                 },
-                child: Text("Recuperar Senha", textAlign: TextAlign.right),
+                child:
+                    const Text("Recuperar Senha", textAlign: TextAlign.right),
               ),
             ),
-            SizedBox(height: 40),
+            const SizedBox(height: 40),
             Container(
               height: 60,
               alignment: Alignment.center,
@@ -65,7 +65,7 @@ class LoginPage extends StatelessWidget {
                   stops: [0.3, 1],
                   colors: [Color(0xFF78559C), Color(0xFFDCADD0)],
                 ),
-                borderRadius: BorderRadius.all(Radius.circular(5)),
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
               ),
               child: TextButton(
                 onPressed: () {
@@ -76,14 +76,14 @@ class LoginPage extends StatelessWidget {
                   );
                 },
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.max,
                   children: [
-                    Container(
+                    SizedBox(
                       height: 28,
                       width: 28,
                       child: Image.asset('assets/google.png'),
                     ),
-                    Text(
+                    const Text(
                       "Login",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -96,18 +96,19 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Container(
               height: 40,
               alignment: Alignment.center,
               child: TextButton(
                 onPressed: () {
+                  // Navegar para SignUpPage ao clicar no botão de cadastro
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => SignUpPage()),
                   );
                 },
-                child: Text(
+                child: const Text(
                   "Cadastre-se",
                   textAlign: TextAlign.center,
                 ),
