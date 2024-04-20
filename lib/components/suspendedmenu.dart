@@ -16,17 +16,33 @@ class SuspendedMenu extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
       child: Container(
         width: double.maxFinite,
-        child:DropdownButton<String>(
-        items: <String>['Masculino', 'Feminino', 'Não Binário', 'Outro']
-            .map<DropdownMenuItem<String>>((String value) {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }).toList(),
-        onChanged: (String? value) {
-          // Você pode adicionar o código desejado aqui para lidar com a mudança de valor
-        },
+        decoration: BoxDecoration(
+          color: Colors.grey[200], 
+          borderRadius: BorderRadius.circular(10), 
+        ),
+        child: DropdownButton<String>(
+          isExpanded: true, // Para fazer o DropdownButton se expandir horizontalmente
+          underline: SizedBox(), 
+          items: <String>['Masculino', 'Feminino', 'Não Binário', 'Outro']
+              .map<DropdownMenuItem<String>>((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  value,
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14, 
+                  ),
+                ),
+              ),
+            );
+          }).toList(),
+          onChanged: (String? value) {
+            // logica do botao
+          },
         ),
       ),
     );

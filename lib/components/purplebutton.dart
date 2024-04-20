@@ -21,6 +21,7 @@ class PurpleButton extends StatelessWidget {
             "Cadastrar",
             style: TextStyle(
               color: Colors.white,
+              fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
               fontSize: 16,
             ),

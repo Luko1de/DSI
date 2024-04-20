@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class MyTextField extends StatelessWidget{
   final controller;
@@ -19,6 +20,11 @@ class MyTextField extends StatelessWidget{
     return Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: TextField(
+            style:TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+              fontSize: 14, 
+            ),
             controller: controller,
             obscureText: obscureText,
             decoration: InputDecoration(

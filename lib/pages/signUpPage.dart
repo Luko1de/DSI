@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testes/components/chipmenu.dart';
 import 'package:testes/components/purplebutton.dart';
 import 'package:testes/components/suspendedmenu.dart';
 import 'package:testes/components/textfield.dart';
@@ -25,13 +26,18 @@ class SignUpPage extends StatelessWidget {
               child: Image.asset('assets/Logo_MovieBox.webp'),
             ),
             const SizedBox(height: 25),
+            const Text('Nome Completo', textAlign: TextAlign.start,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+              fontSize: 18)),
             MyTextField(
               decoration: InputDecoration(
-                labelText: 'Nome Completo',
+                labelText: 'Digite seu nome completo',
                 labelStyle: TextStyle(
                   color: Colors.black38,
                   fontWeight: FontWeight.w400,
-                  fontSize: 20,
+                  fontSize: 14,
                 ),
               ),
               controller: usernameController,
@@ -39,13 +45,18 @@ class SignUpPage extends StatelessWidget {
               obscureText: false,
             ),
             const SizedBox(height: 10),
+            const Text('E-mail', textAlign: TextAlign.start,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+              fontSize: 18)),
             MyTextField(
               decoration: InputDecoration(
-                labelText: 'E-mail',
+                labelText: 'Digite seu e-mail',
                 labelStyle: TextStyle(
                   color: Colors.black38,
                   fontWeight: FontWeight.w400,
-                  fontSize: 20,
+                  fontSize: 14,
                 ),
               ),
               controller: emailController,
@@ -53,13 +64,18 @@ class SignUpPage extends StatelessWidget {
               obscureText: false,
             ),
             const SizedBox(height: 10),
+            const Text('Senha', textAlign: TextAlign.start,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+              fontSize: 18)),
             MyTextField(
               decoration: InputDecoration(
-                labelText: 'Senha',
+                labelText: 'Digite sua senha', 
                 labelStyle: TextStyle(
                   color: Colors.black38,
                   fontWeight: FontWeight.w400,
-                  fontSize: 20,
+                  fontSize: 14,
                 ),
               ),
               controller: passwordController,
@@ -67,13 +83,17 @@ class SignUpPage extends StatelessWidget {
               obscureText: true,
             ),
             const SizedBox(height: 10),
+            const Text('Data de Nascimento', textAlign: TextAlign.start,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+              fontSize: 18)),
             MyTextField(
               decoration: InputDecoration(
-                labelText: 'Data de Nascimento',
                 labelStyle: TextStyle(
                   color: Colors.black38,
                   fontWeight: FontWeight.w400,
-                  fontSize: 20,
+                  fontSize: 14,
                 ),
               ),
               controller: birthController,
@@ -81,8 +101,18 @@ class SignUpPage extends StatelessWidget {
               obscureText: false,
             ),
             const SizedBox(height: 10),
+            const Text('Gênero', textAlign: TextAlign.start,
+            style: TextStyle(
+              fontFamily: 'Poppins',
+              fontWeight: FontWeight.bold,
+              fontSize: 18)),
             SuspendedMenu(
               hintText: 'Gênero',
+            ),
+            const SizedBox(height: 10),
+            ChipMenu(
+              labelText: 'Gêneros Favoritos',
+              options: ['Ação', 'Aventura', 'Comédia', 'Drama', 'Sci-Fi', 'Documentário', 'Romance', 'Suspense', 'Terror', 'Fantasia', 'Musical', 'Thriller'],
             ),
             const SizedBox(height: 10),
             PurpleButton(
