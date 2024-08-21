@@ -60,7 +60,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         UserProfileImage(
-                          imageAssetPath: "assets/Profile.png",
+                          imageAssetPath: "assets/x.png",
                         ),
                         UserInfoCard(
                           title: "Maria Joana Lima",
