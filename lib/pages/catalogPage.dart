@@ -1,27 +1,63 @@
 import 'package:flutter/material.dart';
 
-class HomePage extends StatelessWidget {
+class CatalogScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    const title = 'MovieBox';
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: Colors.white),
+        title: Text('Catálogo de Filmes',
+            style: TextStyle(fontSize: 16, color: Colors.white)),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              // Implementar a funcionalidade de busca
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () {
+              // Implementar a funcionalidade de filtro
+            },
+          ),
+        ],
+      ),
+      body: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+        ),
+        itemCount: 20, // Substituir pela lista real de filmes
+        itemBuilder: (context, index) {
+          return MovieCard(
+            title: 'Filme $index',
+            poster: 'assets/images/poster${index}.jpg',
+          );
+        },
+      ),
+    );
+  }
+}
 
-    return MaterialApp(
-      title: title,
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text(title),
-        ),
-        body: GridView.count(
-          crossAxisCount: 2,
-          children: List.generate(100, (index) {
-            return Center(
-              child: Text(
-                'Movie $index',
-                style: Theme.of(context).textTheme.headlineSmall,
-              ),
-            );
-          }),
-        ),
+class MovieCard extends StatelessWidget {
+  final String title;
+  final String poster;
+
+  const MovieCard({Key? key, required this.title, required this.poster})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: Column(
+        children: [
+          Image.asset(poster),
+          Text(title),
+        ],
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'catalogPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -75,6 +76,10 @@ class _HomePageState extends State<HomePage> {
             // Navegue para a tela inicial
           } else if (index == 1) {
             // Navegue para a tela de filmes
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => CatalogScreen()),
+            );
           } else if (index == 2) {
             // Navegue para a tela de perfil
           } else if (index == 3) {
