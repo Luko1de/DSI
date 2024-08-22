@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'profileScreen.dart';
+import 'catalogPage.dart';
 import 'moviesScreen.dart';
+import 'profileScreen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -519,9 +520,7 @@ class _HomePageState extends State<HomePage> {
             // Navegue para a tela de filmes
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      TelaFilme()), // Substitua `MoviesScreen()` pela sua tela de filmes
+              MaterialPageRoute(builder: (context) => CatalogScreen()),
             );
           } else if (index == 2) {
             // Navegue para a tela de perfil
