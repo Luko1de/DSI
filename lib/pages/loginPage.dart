@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+//import 'package:flutter/widgets.dart';
 import 'homePage.dart';
 import 'signUpPage.dart';
 
@@ -16,15 +16,17 @@ class LoginPage extends StatelessWidget {
             SizedBox(
               width: 288, // Largura do ícone de pipoca
               height: 80,
-              child: Image.asset('assets/Logo Extendida.png'), // Substitua pelo caminho da imagem do ícone de pipoca
+              child: Image.asset(
+                  'assets/Logo Extendida.png'), // Substitua pelo caminho da imagem do ícone de pipoca
             ),
-            
+
             const SizedBox(height: 40),
-          
+
             TextFormField(
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.person, color: Colors.white), // Ícone do usuário
+                prefixIcon:
+                    Icon(Icons.person, color: Colors.white), // Ícone do usuário
                 labelText: "E-mail",
                 labelStyle: TextStyle(
                   color: Colors.white,
@@ -44,7 +46,7 @@ class LoginPage extends StatelessWidget {
               ),
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
-            
+
             const SizedBox(height: 20),
 
             // Campo de Senha
@@ -52,14 +54,16 @@ class LoginPage extends StatelessWidget {
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: InputDecoration(
-                prefixIcon: Icon(Icons.lock, color: Colors.white), // Ícone de senha
+                prefixIcon:
+                    Icon(Icons.lock, color: Colors.white), // Ícone de senha
                 labelText: "Sua senha",
                 labelStyle: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
                 ),
-                suffixIcon: Icon(Icons.visibility, color: Colors.white), // Ícone de visibilidade
+                suffixIcon: Icon(Icons.visibility,
+                    color: Colors.white), // Ícone de visibilidade
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.circular(8),
@@ -73,7 +77,7 @@ class LoginPage extends StatelessWidget {
               ),
               style: TextStyle(fontSize: 16, color: Colors.white),
             ),
-            
+
             Container(
               height: 40,
               alignment: Alignment.centerRight,
@@ -81,20 +85,17 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   // Lógica para recuperar senha (adicionar se necessário)
                 },
-                child:
-                    const Text(
-                      "Esqueceu a senha?",
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        decoration: TextDecoration.underline),
-                      ),
+                child: const Text(
+                  "Esqueceu a senha?",
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline),
                 ),
+              ),
             ),
-            
-            
 
             // Botão de Entrar
             SizedBox(
@@ -144,23 +145,26 @@ class LoginPage extends StatelessWidget {
               children: [
                 IconButton(
                   iconSize: 50,
-                  icon: Image.asset('assets/google.png'), // Caminho para a imagem do Google
-                  onPressed: () {},
-                ),
-                
-                IconButton(
-                  iconSize: 50,
-                  icon: Image.asset('assets/face.png'), // Caminho para a imagem do Facebook
+                  icon: Image.asset(
+                      'assets/google.png'), // Caminho para a imagem do Google
                   onPressed: () {},
                 ),
                 IconButton(
                   iconSize: 50,
-                  icon: Image.asset('assets/twitter.png'), // Caminho para a imagem do X
+                  icon: Image.asset(
+                      'assets/face.png'), // Caminho para a imagem do Facebook
                   onPressed: () {},
                 ),
                 IconButton(
                   iconSize: 50,
-                  icon: Image.asset('assets/icloud.png'), // Caminho para a imagem da Apple
+                  icon: Image.asset(
+                      'assets/twitter.png'), // Caminho para a imagem do X
+                  onPressed: () {},
+                ),
+                IconButton(
+                  iconSize: 50,
+                  icon: Image.asset(
+                      'assets/icloud.png'), // Caminho para a imagem da Apple
                   onPressed: () {},
                 ),
               ],

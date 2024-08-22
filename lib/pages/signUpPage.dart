@@ -71,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
         borderRadius: BorderRadius.circular(8),
       ),
       focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.red),
+        borderSide: BorderSide(color: const Color.fromARGB(255, 244, 67, 54)),
         borderRadius: BorderRadius.circular(8),
       ),
       filled: true,

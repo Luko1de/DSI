@@ -31,6 +31,7 @@ class _TelaPerfilState extends State<TelaPerfil> {
         break;
       case 3:
         // Navegar para a tela de Sair (a ser implementada)
+
         break;
       default:
         break;

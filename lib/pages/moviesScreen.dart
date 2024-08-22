@@ -8,6 +8,7 @@ import '../components/genre_chips.dart';
 import '../components/movie_cast.dart';
 import '../components/movie_synopsis.dart';
 import '../components/bottom_nav_bar.dart';
+import 'reviewsPage.dart';
 
 class TelaFilme extends StatefulWidget {
   @override
@@ -42,6 +43,13 @@ class _TelaFilmeState extends State<TelaFilme> {
     });
   }
 
+  void _navigateToReviews() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => TelaAvaliacoes()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,7 +67,11 @@ class _TelaFilmeState extends State<TelaFilme> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        MovieImage(imagePath: "dune.webp"),
+                        GestureDetector(
+                          onTap: _navigateToReviews,
+                          child: MovieImage(imagePath: "dune.webp"),
+                        ),
+
                         MovieTitle(title: "Dune: Part Two"),
                         MovieDetails(
                           duration: "167 min",
