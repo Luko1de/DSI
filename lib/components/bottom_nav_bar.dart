@@ -23,8 +23,12 @@ class BottomNavBar extends StatelessWidget {
           label: 'Perfil',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.exit_to_app),
-          label: 'Sair',
+          icon: Icon(Icons.map),
+          label: 'Cinemas',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.favorite),
+          label: 'Favoritos',
         ),
       ],
       currentIndex: currentIndex,

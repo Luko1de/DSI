@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 class UserProfileImage extends StatelessWidget {
   final String imageAssetPath;
 
-  const UserProfileImage({required this.imageAssetPath});
+  const UserProfileImage({
+    Key? key,
+    required this.imageAssetPath,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(60),
-      ),
-      margin: EdgeInsets.symmetric(horizontal: 120, vertical: 13),
-      height: 120,
-      width: double.infinity,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(60),
+    return Center(
+      child: ClipOval(
         child: Image.asset(
           imageAssetPath,
-          fit: BoxFit.fill,
+          width: 120, // Definindo uma largura fixa para a imagem
+          height:
+              120, // Definindo uma altura fixa para a imagem (igual à largura para manter o círculo)
+          fit: BoxFit
+              .cover, // Cobre a área disponível, garantindo que a imagem preencha o círculo
         ),
       ),
     );

@@ -1,39 +1,37 @@
 import 'package:flutter/material.dart';
 
-// Custom MyTextField widget
-class MyTextField extends StatelessWidget {
-  final TextEditingController controller;
+class MyTextField extends StatelessWidget{
+  final controller;
   final String hintText;
   final bool obscureText;
-  final InputDecoration? decoration;
 
   const MyTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     required this.obscureText,
-    this.decoration,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      obscureText: obscureText,
-      decoration: decoration ??
-          InputDecoration(
-            hintText: hintText,
-            enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.white),
-              borderRadius: BorderRadius.circular(8),
+    return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+          child: TextField(
+            controller: controller,
+            obscureText: obscureText,
+            decoration: InputDecoration(
+              enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Color(0xFF767676)),
+              ),
+              fillColor: Colors.grey.shade200,
+              filled: true,
+              hintText: hintText,
+              hintStyle: TextStyle(color: Colors.grey[500])
             ),
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            filled: true,
-            fillColor: Colors.grey[900],
-          ),
-    );
+          ), // Add a comma here
+        ) ;
   }
 }
