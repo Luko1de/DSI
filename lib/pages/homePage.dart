@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'catalogPage.dart';
-import 'moviesScreen.dart';
-import 'profileScreen.dart';
+import 'package:testes/components/bottom_nav_bar.dart';
+import 'FavoritePage.dart';
+import 'CatalogPage.dart';
+import 'MoviePage.dart';
+import 'ProfilePage.dart';
+import 'MapPage.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -14,25 +17,69 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _currentIndex = 0; // Índice da barra de navegação inferior
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    // Adicione a lógica de navegação para cada item aqui
+    if (index == 0) {
+      // Navegue para a tela inicial
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else if (index == 1) {
+      // Navegue para a tela de filmes
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const CatalogPage()),
+      );
+    } else if (index == 2) {
+      // Navegue para a tela de perfil
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    } else if (index == 3) {
+      // Navegue para a tela de favoritos
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const FavoritePage()),
+      );
+    } else if (index == 4) {
+      // Navegue para a tela de mapas
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MapPage()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       backgroundColor: Colors.black,
+      
       appBar: AppBar(
           backgroundColor: const Color.fromARGB(0, 32, 31, 31),
-          title: Text('MovieBox'),
+          title: const Text('MovieBox'),
           // Define a cor branca para os ícones e o título
-          iconTheme: IconThemeData(color: Colors.white),
-          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
+          iconTheme: const IconThemeData(color: Colors.white),
+          titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
           centerTitle: true,
-          actions: []),
+          actions: const []),
+      
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          
           children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
               child: Text(
                 'Acho que você pode gostar',
                 style: TextStyle(
@@ -41,6 +88,8 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            
+            
             CarouselSlider.builder(
               itemCount: 10,
               options: CarouselOptions(
@@ -55,7 +104,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
+                        builder: (context) => const MoviePage(),
                       ),
                     );
                   },
@@ -83,9 +132,11 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            
+            
+            const SizedBox(height: 50),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
               child: Text(
                 'Drama',
                 style: TextStyle(
@@ -94,6 +145,8 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            
+            
             CarouselSlider.builder(
               itemCount: 10,
               options: CarouselOptions(
@@ -107,7 +160,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
+                        builder: (context) => const MoviePage(),
                       ),
                     );
                   },
@@ -135,9 +188,11 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            
+            
+            const SizedBox(height: 50),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
               child: Text(
                 'Ficção Científica',
                 style: TextStyle(
@@ -146,6 +201,8 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            
+            
             CarouselSlider.builder(
               itemCount: 10,
               options: CarouselOptions(
@@ -159,7 +216,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
+                        builder: (context) => const MoviePage(),
                       ),
                     );
                   },
@@ -187,9 +244,11 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            
+            
+            const SizedBox(height: 50),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
               child: Text(
                 'Animação',
                 style: TextStyle(
@@ -198,6 +257,8 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            
+            
             CarouselSlider.builder(
               itemCount: 10,
               options: CarouselOptions(
@@ -211,7 +272,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
+                        builder: (context) => const MoviePage(),
                       ),
                     );
                   },
@@ -239,9 +300,11 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            
+            
+            const SizedBox(height: 50),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
               child: Text(
                 'Comédia',
                 style: TextStyle(
@@ -250,6 +313,8 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            
+            
             CarouselSlider.builder(
               itemCount: 10,
               options: CarouselOptions(
@@ -263,7 +328,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
+                        builder: (context) => const MoviePage(),
                       ),
                     );
                   },
@@ -291,9 +356,11 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            
+            
+            const SizedBox(height: 50),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
               child: Text(
                 'Documentário',
                 style: TextStyle(
@@ -302,6 +369,8 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            
+            
             CarouselSlider.builder(
               itemCount: 10,
               options: CarouselOptions(
@@ -315,7 +384,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
+                        builder: (context) => const MoviePage(),
                       ),
                     );
                   },
@@ -343,9 +412,11 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            
+            
+            const SizedBox(height: 50),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
               child: Text(
                 'Infantil',
                 style: TextStyle(
@@ -354,6 +425,8 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            
+            
             CarouselSlider.builder(
               itemCount: 10,
               options: CarouselOptions(
@@ -367,7 +440,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
+                        builder: (context) => const MoviePage(),
                       ),
                     );
                   },
@@ -395,9 +468,11 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            
+            
+            const SizedBox(height: 50),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
               child: Text(
                 'Musical',
                 style: TextStyle(
@@ -406,12 +481,15 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            
+            
             CarouselSlider.builder(
               itemCount: 10,
               options: CarouselOptions(
                 height: 250,
                 viewportFraction: 0.2,
               ),
+              
               itemBuilder:
                   (BuildContext context, int index, int pageViewIndex) {
                 return GestureDetector(
@@ -419,7 +497,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
+                        builder: (context) => const MoviePage(),
                       ),
                     );
                   },
@@ -447,9 +525,10 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
+            
+            const SizedBox(height: 50),
+            const Padding(
+              padding: EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
               child: Text(
                 'Romance',
                 style: TextStyle(
@@ -458,6 +537,7 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            
             CarouselSlider.builder(
               itemCount: 10,
               options: CarouselOptions(
@@ -471,7 +551,7 @@ class _HomePageState extends State<HomePage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
+                        builder: (context) => const MoviePage(),
                       ),
                     );
                   },
@@ -499,68 +579,17 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-        selectedItemColor: Color.fromRGBO(230, 31, 9, 1),
-        unselectedItemColor: Color.fromRGBO(230, 31, 9, 1),
-        currentIndex:
-            _currentIndex, // Define o índice atual da barra de navegação
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          // Adicione a lógica de navegação para cada item aqui
-          if (index == 0) {
-            // Navegue para a tela inicial
-          } else if (index == 1) {
-            // Navegue para a tela de filmes
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => CatalogScreen()),
-            );
-          } else if (index == 2) {
-            // Navegue para a tela de perfil
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) =>
-                      TelaPerfil()), // Substitua `ProfileScreen()` pela sua tela de perfil
-            );
-          } else if (index == 3) {
-            // Navegue para a tela de sair
-          }
-        },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Início',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.movie),
-            label: 'Filmes',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite), // Novo ícone 1
-            label: 'Favoritos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map), // Novo ícone 2
-            label: 'Mapas',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            label: 'Sair',
-          ),
-        ],
+      
+      //barra de navegação
+      bottomNavigationBar: BottomNavBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
       ),
+
     );
   }
 }

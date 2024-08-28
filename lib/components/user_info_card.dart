@@ -6,7 +6,7 @@ class UserInfoCard extends StatelessWidget {
   final String obscurePassword;
   final String dateOfBirth;
 
-  const UserInfoCard({
+  const UserInfoCard({super.key, 
     required this.title,
     required this.subtitle,
     required this.obscurePassword,
@@ -36,15 +36,15 @@ class UserInfoCard extends StatelessWidget {
   Widget _infoCard({required String icon, required String text}) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0xFFB4ADAC), width: 2),
+        border: Border.all(color: const Color(0xFFB4ADAC), width: 2),
         borderRadius: BorderRadius.circular(8),
       ),
-      padding: EdgeInsets.symmetric(vertical: 13, horizontal: 11),
-      margin: EdgeInsets.symmetric(vertical: 8, horizontal: 36),
+      padding: const EdgeInsets.symmetric(vertical: 13, horizontal: 11),
+      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 36),
       child: Row(
         children: [
           Container(
-            margin: EdgeInsets.only(right: 15),
+            margin: const EdgeInsets.only(right: 15),
             width: 20,
             height: 14,
             child: Image.network(
@@ -55,7 +55,7 @@ class UserInfoCard extends StatelessWidget {
           Expanded(
             child: Text(
               text,
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFFFAFAFA),
                 fontSize: 16,
                 fontWeight: FontWeight.bold,

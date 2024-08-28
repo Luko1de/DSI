@@ -7,7 +7,7 @@ class MyButton extends StatelessWidget {
   final Color textColor;
   final bool isOutlined;
 
-  const MyButton({
+  const MyButton({super.key, 
     required this.text,
     required this.onPressed,
     required this.color,
@@ -21,7 +21,7 @@ class MyButton extends StatelessWidget {
         ? OutlinedButton(
             style: OutlinedButton.styleFrom(
               side: BorderSide(color: textColor),
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
@@ -32,7 +32,7 @@ class MyButton extends StatelessWidget {
         : ElevatedButton(
             style: ElevatedButton.styleFrom(
               backgroundColor: color,
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+              padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),

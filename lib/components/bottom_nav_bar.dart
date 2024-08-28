@@ -4,7 +4,7 @@ class BottomNavBar extends StatelessWidget {
   final int currentIndex;
   final ValueChanged<int> onTap;
 
-  BottomNavBar({required this.currentIndex, required this.onTap});
+  const BottomNavBar({super.key, required this.currentIndex, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +23,16 @@ class BottomNavBar extends StatelessWidget {
           label: 'Perfil',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.map),
-          label: 'Cinemas',
-        ),
-        BottomNavigationBarItem(
           icon: Icon(Icons.favorite),
           label: 'Favoritos',
         ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.map),
+          label: 'Cinemas',
+        ),
       ],
       currentIndex: currentIndex,
-      selectedItemColor: Color(0xFFF5001E),
+      selectedItemColor: const Color(0xFFF5001E),
       unselectedItemColor: Colors.grey,
       onTap: onTap,
     );
