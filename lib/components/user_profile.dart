@@ -4,9 +4,9 @@ class UserProfileImage extends StatelessWidget {
   final String imageAssetPath;
 
   const UserProfileImage({
-    Key? key,
+    super.key,
     required this.imageAssetPath,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
