@@ -1,7 +1,8 @@
 // lib/pages/tela_favoritos.dart
 import 'package:flutter/material.dart';
-import '../components/custom_search_bar.dart';
-import '../components/bottom_nav_bar.dart'; // Importando o BottomNavBar
+//import '../components/custom_search_bar.dart';
+import '../components/bottom_nav_bar.dart'; //
+import 'custom_search_bar.dart'; //Importando o BottomNavBar
 
 class TelaFavoritos extends StatelessWidget {
   const TelaFavoritos({super.key});

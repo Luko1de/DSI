@@ -16,24 +16,30 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // Obtém as dimensões da tela
+    final size = MediaQuery.of(context).size;
+    final double screenHeight = size.height;
+    final double screenWidth = size.width;
+
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-          backgroundColor: const Color.fromARGB(0, 32, 31, 31),
-          title: Text('MovieBox'),
-          // Define a cor branca para os ícones e o título
-          iconTheme: IconThemeData(color: Colors.white),
-          titleTextStyle: TextStyle(color: Colors.white, fontSize: 20),
-          centerTitle: true,
-          actions: []),
+        backgroundColor: const Color.fromARGB(0, 32, 31, 31),
+        title: const Text('MovieBox'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // Título de recomendação
             Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: Text(
+              padding: EdgeInsets.fromLTRB(screenWidth * 0.02,
+                  screenHeight * 0.02, screenWidth * 0.02, screenHeight * 0.01),
+              child: const Text(
                 'Acho que você pode gostar',
                 style: TextStyle(
                     fontSize: 20,
@@ -41,12 +47,13 @@ class _HomePageState extends State<HomePage> {
                     color: Colors.white),
               ),
             ),
+            // Slider de filmes recomendados
             CarouselSlider.builder(
-              itemCount: 10,
+              itemCount: 3,
               options: CarouselOptions(
-                height: 250,
-                viewportFraction: 0.2,
-                // Ajuste para diminuir o tamanho do item e criar mais espaço
+                height: screenHeight * 0.35,
+                viewportFraction: 0.7, // Ajuste para o tamanho do Pixel 7
+                enlargeCenterPage: true,
               ),
               itemBuilder:
                   (BuildContext context, int index, int pageViewIndex) {
@@ -60,8 +67,8 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   child: Container(
-                    height: 250,
-                    width: 175,
+                    height: screenHeight * 0.35,
+                    width: screenWidth * 0.6,
                     decoration: BoxDecoration(
                       borderRadius:
                           BorderRadius.circular(16), // Borda arredondada
@@ -70,10 +77,9 @@ class _HomePageState extends State<HomePage> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16),
                       child: Image.asset(
-                        'assets/poster_0${index % 3 + 1}.png', // Certifique-se de que o nome do arquivo corresponde
+                        'assets/poster_0${index % 3 + 1}.png',
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          // Se a imagem não for encontrada, exiba uma imagem padrão
                           return Image.asset('assets/default_poster.png',
                               fit: BoxFit.cover);
                         },
@@ -83,430 +89,38 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: Text(
-                'Drama',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: 10,
-              options: CarouselOptions(
-                height: 250,
-                viewportFraction: 0.2,
-              ),
-              itemBuilder:
-                  (BuildContext context, int index, int pageViewIndex) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 250,
-                    width: 175,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(16), // Borda arredondada
-                      border: Border.all(color: Colors.white), // Borda branca
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/poster_0${index % 3 + 1}.png', // Certifique-se de que o nome do arquivo corresponde
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Se a imagem não for encontrada, exiba uma imagem padrão
-                          return Image.asset('assets/default_poster.png',
-                              fit: BoxFit.cover);
-                        },
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: Text(
-                'Ficção Científica',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: 10,
-              options: CarouselOptions(
-                height: 250,
-                viewportFraction: 0.2,
-              ),
-              itemBuilder:
-                  (BuildContext context, int index, int pageViewIndex) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 250,
-                    width: 175,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(16), // Borda arredondada
-                      border: Border.all(color: Colors.white), // Borda branca
-                    ), // Chave de fechamento adicionada aqui
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/poster_0${index % 3 + 1}.png', // Certifique-se de que o nome do arquivo corresponde
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Se a imagem não for encontrada, exiba uma imagem padrão
-                          return Image.asset('assets/default_poster.png',
-                              fit: BoxFit.cover);
-                        }, // Borda branca
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: Text(
-                'Animação',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: 10,
-              options: CarouselOptions(
-                height: 250,
-                viewportFraction: 0.2,
-              ),
-              itemBuilder:
-                  (BuildContext context, int index, int pageViewIndex) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 250,
-                    width: 175,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(16), // Borda arredondada
-                      border: Border.all(color: Colors.white), // Borda branca
-                    ), // Chave de fechamento adicionada aqui
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/poster_0${index % 3 + 1}.png', // Certifique-se de que o nome do arquivo corresponde
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Se a imagem não for encontrada, exiba uma imagem padrão
-                          return Image.asset('assets/default_poster.png',
-                              fit: BoxFit.cover);
-                        }, // Borda branca
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: Text(
-                'Comédia',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: 10,
-              options: CarouselOptions(
-                height: 250,
-                viewportFraction: 0.2,
-              ),
-              itemBuilder:
-                  (BuildContext context, int index, int pageViewIndex) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 250,
-                    width: 175,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(16), // Borda arredondada
-                      border: Border.all(color: Colors.white), // Borda branca
-                    ), // Chave de fechamento adicionada aqui
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/poster_0${index % 3 + 1}.png', // Certifique-se de que o nome do arquivo corresponde
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Se a imagem não for encontrada, exiba uma imagem padrão
-                          return Image.asset('assets/default_poster.png',
-                              fit: BoxFit.cover);
-                        }, // Borda branca
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: Text(
-                'Documentário',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: 10,
-              options: CarouselOptions(
-                height: 250,
-                viewportFraction: 0.2,
-              ),
-              itemBuilder:
-                  (BuildContext context, int index, int pageViewIndex) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 250,
-                    width: 175,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(16), // Borda arredondada
-                      border: Border.all(color: Colors.white), // Borda branca
-                    ), // Chave de fechamento adicionada aqui
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/poster_0${index % 3 + 1}.png', // Certifique-se de que o nome do arquivo corresponde
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Se a imagem não for encontrada, exiba uma imagem padrão
-                          return Image.asset('assets/default_poster.png',
-                              fit: BoxFit.cover);
-                        }, // Borda branca
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: Text(
-                'Infantil',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: 10,
-              options: CarouselOptions(
-                height: 250,
-                viewportFraction: 0.2,
-              ),
-              itemBuilder:
-                  (BuildContext context, int index, int pageViewIndex) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 250,
-                    width: 175,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(16), // Borda arredondada
-                      border: Border.all(color: Colors.white), // Borda branca
-                    ), // Chave de fechamento adicionada aqui
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/poster_0${index % 3 + 1}.png', // Certifique-se de que o nome do arquivo corresponde
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Se a imagem não for encontrada, exiba uma imagem padrão
-                          return Image.asset('assets/default_poster.png',
-                              fit: BoxFit.cover);
-                        }, // Borda branca
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: Text(
-                'Musical',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: 10,
-              options: CarouselOptions(
-                height: 250,
-                viewportFraction: 0.2,
-              ),
-              itemBuilder:
-                  (BuildContext context, int index, int pageViewIndex) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 250,
-                    width: 175,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(16), // Borda arredondada
-                      border: Border.all(color: Colors.white), // Borda branca
-                    ), // Chave de fechamento adicionada aqui
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/poster_0${index % 3 + 1}.png', // Certifique-se de que o nome do arquivo corresponde
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Se a imagem não for encontrada, exiba uma imagem padrão
-                          return Image.asset('assets/default_poster.png',
-                              fit: BoxFit.cover);
-                        }, // Borda branca
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 50),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8.0, 16.0, 8.0, 8.0),
-              child: Text(
-                'Romance',
-                style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-            CarouselSlider.builder(
-              itemCount: 10,
-              options: CarouselOptions(
-                height: 250,
-                viewportFraction: 0.2,
-              ),
-              itemBuilder:
-                  (BuildContext context, int index, int pageViewIndex) {
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaFilme(),
-                      ),
-                    );
-                  },
-                  child: Container(
-                    height: 250,
-                    width: 175,
-                    decoration: BoxDecoration(
-                      borderRadius:
-                          BorderRadius.circular(16), // Borda arredondada
-                      border: Border.all(color: Colors.white), // Borda branca
-                    ), // Chave de fechamento adicionada aqui
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(16),
-                      child: Image.asset(
-                        'assets/poster_0${index % 3 + 1}.png', // Certifique-se de que o nome do arquivo corresponde
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          // Se a imagem não for encontrada, exiba uma imagem padrão
-                          return Image.asset('assets/default_poster.png',
-                              fit: BoxFit.cover);
-                        }, // Borda branca
-                      ),
-                    ),
-                  ),
-                );
-              },
-            ),
-            SizedBox(height: 50),
+            SizedBox(height: screenHeight * 0.05),
+            // Gênero Drama
+            _buildGenreSection(context, 'Drama', 10, screenHeight, screenWidth),
+            // Gênero Ficção Científica
+            _buildGenreSection(
+                context, 'Ficção Científica', 10, screenHeight, screenWidth),
+            // Gênero Animação
+            _buildGenreSection(
+                context, 'Animação', 10, screenHeight, screenWidth),
+            // Gênero Comédia
+            _buildGenreSection(
+                context, 'Comédia', 10, screenHeight, screenWidth),
+            // Gênero Documentário
+            _buildGenreSection(
+                context, 'Documentário', 10, screenHeight, screenWidth),
+            // Gênero Infantil
+            _buildGenreSection(
+                context, 'Infantil', 10, screenHeight, screenWidth),
+            // Gênero Musical
+            _buildGenreSection(
+                context, 'Musical', 10, screenHeight, screenWidth),
+            // Gênero Romance
+            _buildGenreSection(
+                context, 'Romance', 10, screenHeight, screenWidth),
+            SizedBox(height: screenHeight * 0.05),
           ],
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-        selectedItemColor: Color.fromRGBO(230, 31, 9, 1),
-        unselectedItemColor: Color.fromRGBO(230, 31, 9, 1),
+        backgroundColor: const Color.fromRGBO(255, 255, 255, 1),
+        selectedItemColor: const Color.fromRGBO(230, 31, 9, 1),
+        unselectedItemColor: const Color.fromRGBO(230, 31, 9, 1),
         currentIndex:
             _currentIndex, // Define o índice atual da barra de navegação
         onTap: (int index) {
@@ -515,7 +129,7 @@ class _HomePageState extends State<HomePage> {
           });
           // Adicione a lógica de navegação para cada item aqui
           if (index == 0) {
-            // Navegue para a tela inicial
+            // Já está na tela inicial, não é necessário navegação
           } else if (index == 1) {
             // Navegue para a tela de filmes
             Navigator.push(
@@ -528,10 +142,14 @@ class _HomePageState extends State<HomePage> {
               context,
               MaterialPageRoute(
                   builder: (context) =>
-                      TelaPerfil()), // Substitua `ProfileScreen()` pela sua tela de perfil
+                      TelaPerfil()), // Substitua `TelaPerfil` pela sua tela de perfil
             );
           } else if (index == 3) {
-            // Navegue para a tela de sair
+            // Navegue para a tela de favoritos
+          } else if (index == 4) {
+            // Navegue para a tela de mapas
+          } else if (index == 5) {
+            // Lógica para sair
           }
         },
         items: const <BottomNavigationBarItem>[
@@ -563,6 +181,62 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
 
-// 
+  Widget _buildGenreSection(BuildContext context, String genre, int itemCount,
+      double screenHeight, double screenWidth) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.fromLTRB(screenWidth * 0.02, screenHeight * 0.02,
+              screenWidth * 0.02, screenHeight * 0.01),
+          child: Text(
+            genre,
+            style: const TextStyle(
+                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
+          ),
+        ),
+        CarouselSlider.builder(
+          itemCount: itemCount,
+          options: CarouselOptions(
+            height: screenHeight * 0.35,
+            viewportFraction: 0.7, // Mesma largura do primeiro slider
+            enlargeCenterPage: true,
+          ),
+          itemBuilder: (BuildContext context, int index, int pageViewIndex) {
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TelaFilme(),
+                  ),
+                );
+              },
+              child: Container(
+                height: screenHeight * 0.35,
+                width: screenWidth * 0.6, // Mesma largura do primeiro slider
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16), // Borda arredondada
+                  border: Border.all(color: Colors.white), // Borda branca
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: Image.asset(
+                    'assets/poster_0${index % 3 + 1}.png',
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/default_poster.png',
+                          fit: BoxFit.cover);
+                    },
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        SizedBox(height: screenHeight * 0.05),
+      ],
+    );
+  }
+}

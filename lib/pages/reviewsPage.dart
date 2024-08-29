@@ -10,6 +10,10 @@ class TelaAvaliacoes extends StatefulWidget {
 
 class _TelaAvaliacoesState extends State<TelaAvaliacoes> {
   int _currentIndex = 0; // Índice atual da barra de navegação
+  bool isFavorito = false; // Controle de estado para o ícone de favorito
+  bool isAssistido = false; // Controle de estado para o ícone de assistido
+  String?
+      _selectedOption; // Variável de estado para armazenar a opção selecionada
 
   void _onItemTapped(int index) {
     setState(() {
@@ -82,8 +86,19 @@ class _TelaAvaliacoesState extends State<TelaAvaliacoes> {
               child: DropdownButton<String>(
                 isExpanded:
                     true, // Para expandir o botão para a largura completa
-                items: <String>['Opção 1', 'Opção 2', 'Opção 3']
-                    .map((String value) {
+                value: _selectedOption, // Define o valor selecionado
+                items: <String>[
+                  '1',
+                  '2',
+                  '3',
+                  '4',
+                  '5',
+                  '6',
+                  '7',
+                  '8',
+                  '9',
+                  '10'
+                ].map((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
                     child: Text(
@@ -97,7 +112,9 @@ class _TelaAvaliacoesState extends State<TelaAvaliacoes> {
                   );
                 }).toList(),
                 onChanged: (String? newValue) {
-                  // Ação quando um item é selecionado
+                  setState(() {
+                    _selectedOption = newValue; // Atualiza o valor selecionado
+                  });
                 },
                 hint: Text(
                   'Escolha uma opção',
@@ -120,35 +137,76 @@ class _TelaAvaliacoesState extends State<TelaAvaliacoes> {
             SizedBox(
                 height:
                     16), // Espaçamento entre o DropdownButton e o próximo texto
-            Row(
-              children: [
-                Icon(Icons.favorite, color: Colors.red),
-                SizedBox(width: 8), // Distância entre o ícone e o texto
-                Text(
-                  'Favorito',
-                  style: TextStyle(
-                    fontSize: 16, // Menor tamanho de fonte para os textos
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isFavorito = !isFavorito; // Alterna o estado do favorito
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          'Favorito',
+                          style: TextStyle(
+                            fontSize:
+                                16, // Menor tamanho de fonte para os textos
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.favorite,
+                          color: isFavorito
+                              ? Colors.red
+                              : Colors.white, // Muda a cor quando selecionado
+                          size: 30, // Tamanho maior do ícone
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(height: 8), // Espaçamento entre "Favorito" e "Assistido"
-            Row(
-              children: [
-                Icon(Icons.check_circle,
-                    color: Colors.green), // Ícone ao lado de "Assistido"
-                SizedBox(width: 8), // Distância entre o ícone e o texto
-                Text(
-                  'Assistido',
-                  style: TextStyle(
-                    fontSize: 16, // Menor tamanho de fonte para os textos
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isAssistido = !isAssistido; // Alterna o estado do assistido
+                });
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Text(
+                          'Assistido',
+                          style: TextStyle(
+                            fontSize:
+                                16, // Menor tamanho de fonte para os textos
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Spacer(),
+                        Icon(
+                          Icons.check_circle,
+                          color: isAssistido
+                              ? Colors.green
+                              : Colors.white, // Muda a cor quando selecionado
+                          size: 30, // Tamanho maior do ícone
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             SizedBox(
                 height: 16), // Espaçamento entre "Assistido" e "Comentário"
