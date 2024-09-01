@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 //import 'package:flutter/widgets.dart';
-import 'homePage.dart';
-import 'signUpPage.dart';
+import 'HomePage.dart';
+import 'SignUpPage.dart';
 
 class LoginPage extends StatelessWidget {
+  const LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,25 +28,25 @@ class LoginPage extends StatelessWidget {
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
                 prefixIcon:
-                    Icon(Icons.person, color: Colors.white), // Ícone do usuário
+                    const Icon(Icons.person, color: Colors.white), // Ícone do usuário
                 labelText: "E-mail",
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: const BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red),
+                  borderSide: const BorderSide(color: Colors.red),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 filled: true,
                 fillColor: Colors.grey[900], // Fundo do campo
               ),
-              style: TextStyle(fontSize: 16, color: Colors.white),
+              style: const TextStyle(fontSize: 16, color: Colors.white),
             ),
 
             const SizedBox(height: 20),
@@ -55,27 +57,27 @@ class LoginPage extends StatelessWidget {
               obscureText: true,
               decoration: InputDecoration(
                 prefixIcon:
-                    Icon(Icons.lock, color: Colors.white), // Ícone de senha
+                    const Icon(Icons.lock, color: Colors.white), // Ícone de senha
                 labelText: "Sua senha",
-                labelStyle: TextStyle(
+                labelStyle: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
                 ),
-                suffixIcon: Icon(Icons.visibility,
+                suffixIcon: const Icon(Icons.visibility,
                     color: Colors.white), // Ícone de visibilidade
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white),
+                  borderSide: const BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red),
+                  borderSide: const BorderSide(color: Colors.red),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 filled: true,
                 fillColor: Colors.grey[900], // Fundo do campo
               ),
-              style: TextStyle(fontSize: 16, color: Colors.white),
+              style: const TextStyle(fontSize: 16, color: Colors.white),
             ),
 
             Container(
@@ -112,7 +114,7 @@ class LoginPage extends StatelessWidget {
                   // Navegar para a HomePage ao clicar no botão de login
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomePage()),
+                    MaterialPageRoute(builder: (context) => const HomePage()),
                   );
                 },
                 child: const Text(
@@ -129,7 +131,7 @@ class LoginPage extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Texto "Ou entre com:"
-            Text(
+            const Text(
               "Ou entre com:",
               style: TextStyle(
                 color: Colors.white,
@@ -176,7 +178,7 @@ class LoginPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                const Text(
                   "Não tem uma conta?",
                   style: TextStyle(color: Colors.white),
                 ),
@@ -185,10 +187,10 @@ class LoginPage extends StatelessWidget {
                     // Navegar para SignUpPage ao clicar no botão de cadastro
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpPage()),
+                      MaterialPageRoute(builder: (context) => const SignUpPage()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     "Cadastre-se",
                     style: TextStyle(
                       color: Colors.red,

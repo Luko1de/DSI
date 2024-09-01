@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'moviesScreen.dart';
-import 'profileScreen.dart';
+import 'ProfilePage.dart';
+import 'FavoritePage.dart';
+import 'homePage.dart';
+import 'MapPage.dart'; // Adicione a importação
+import 'moviesScreen.dart'; // Importe a tela de detalhes do filme
 
 class CatalogScreen extends StatefulWidget {
   @override
@@ -66,17 +69,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
                 return MovieCard(
                   title: 'Filme $index',
                   poster: 'assets/poster_0${index % 3 + 1}.png',
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TelaFilme(
-                          title: 'Filme $index',
-                          poster: 'assets/poster_0${index % 3 + 1}.png',
-                        ),
-                      ),
-                    );
-                  },
                 );
               },
             ),
@@ -93,18 +85,27 @@ class _CatalogScreenState extends State<CatalogScreen> {
             _currentIndex = index;
           });
           if (index == 0) {
-            // Navegue para a tela inicial
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            ); // Navegue para a tela inicial
           } else if (index == 1) {
             // Já está na tela de filmes, não é necessário navegação
           } else if (index == 2) {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => TelaPerfil()),
+              MaterialPageRoute(builder: (context) => ProfilePage()),
             );
           } else if (index == 3) {
-            // Navegue para a tela de favoritos
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FavoritePage()),
+            ); // Navegue para a tela de favoritos
           } else if (index == 4) {
-            // Navegue para a tela de mapas
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => MapPage()),
+            ); // Navegue para a tela de mapas
           } else if (index == 5) {
             // Lógica para sair
           }
@@ -130,10 +131,6 @@ class _CatalogScreenState extends State<CatalogScreen> {
             icon: Icon(Icons.map),
             label: 'Mapas',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.exit_to_app),
-            label: 'Sair',
-          ),
         ],
       ),
     );
@@ -143,19 +140,21 @@ class _CatalogScreenState extends State<CatalogScreen> {
 class MovieCard extends StatelessWidget {
   final String title;
   final String poster;
-  final VoidCallback onTap;
 
-  const MovieCard({
-    Key? key,
-    required this.title,
-    required this.poster,
-    required this.onTap,
-  }) : super(key: key);
+  const MovieCard({Key? key, required this.title, required this.poster})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TelaFilme(),
+          ),
+        );
+      },
       child: Card(
         color: Colors.grey[900],
         child: Column(

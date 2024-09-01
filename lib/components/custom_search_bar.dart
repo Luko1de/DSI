@@ -3,24 +3,24 @@ import 'package:flutter/material.dart';
 class CustomSearchBar extends StatelessWidget {
   final Function(String) onSearch;
 
-  const CustomSearchBar({required this.onSearch, Key? key}) : super(key: key);
+  const CustomSearchBar({required this.onSearch, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         border: Border.all(
-          color: Color(0xFFB4ADAC),
+          color: const Color(0xFFB4ADAC),
           width: 1,
         ),
         borderRadius: BorderRadius.circular(15),
       ),
-      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 0),
-      margin: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+      margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
       child: Row(
         children: [
           Container(
-            margin: EdgeInsets.only(right: 11),
+            margin: const EdgeInsets.only(right: 11),
             width: 20,
             height: 20,
             child: Image.network(
@@ -30,7 +30,7 @@ class CustomSearchBar extends StatelessWidget {
           ),
           Expanded(
             child: TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: "Buscar filme favorito",
                 border: InputBorder.none,
                 hintStyle: TextStyle(
@@ -38,7 +38,7 @@ class CustomSearchBar extends StatelessWidget {
                   fontSize: 10,
                 ),
               ),
-              style: TextStyle(
+              style: const TextStyle(
                 color: Color(0xFFFAFAFA),
                 fontSize: 10,
               ),

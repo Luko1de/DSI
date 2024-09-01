@@ -4,7 +4,7 @@ class ChipMenu extends StatefulWidget {
   final List<String> options;
   final String labelText;
 
-  const ChipMenu({Key? key, required this.options, required this.labelText}) : super(key: key);
+  const ChipMenu({super.key, required this.options, required this.labelText});
 
   @override
   State<ChipMenu> createState() => _ChipMenuState();
@@ -30,7 +30,7 @@ class _ChipMenuState extends State<ChipMenu> {
           child: Text(
             widget.labelText, // Usar o texto passado ao chamar o componente
             textAlign: TextAlign.left,
-            style: TextStyle(
+            style: const TextStyle(
               fontFamily: 'Poppins',
               fontWeight: FontWeight.bold,
               fontSize: 18, 
@@ -52,7 +52,7 @@ class _ChipMenuState extends State<ChipMenu> {
               child: ChoiceChip(
                 label: Text(widget.options[index]),
                 selected: isSelectedList[index],
-                selectedColor: Color.fromARGB(194, 107, 1, 156),
+                selectedColor: const Color.fromARGB(194, 107, 1, 156),
                 onSelected: (isSelected) {
                   setState(() {
                     isSelectedList[index] = isSelected;

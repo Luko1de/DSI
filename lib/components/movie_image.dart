@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MovieImage extends StatelessWidget {
   final String imagePath;
 
-  MovieImage({required this.imagePath});
+  const MovieImage({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class MovieImage extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
       ),
-      margin: EdgeInsets.symmetric(horizontal: 80),
+      margin: const EdgeInsets.symmetric(horizontal: 80),
       height: 314,
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),

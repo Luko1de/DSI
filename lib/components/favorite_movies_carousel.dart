@@ -4,14 +4,14 @@ class FavoriteMoviesCarousel extends StatelessWidget {
   final List<String> movieAssetPaths;
   final Function(String) onMovieTap;
 
-  const FavoriteMoviesCarousel({
+  const FavoriteMoviesCarousel({super.key, 
     required this.movieAssetPaths,
     required this.onMovieTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 200,
       width: double.infinity,
       child: ListView.builder(
@@ -30,7 +30,7 @@ class FavoriteMoviesCarousel extends StatelessWidget {
         onMovieTap(assetPath);
       },
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(horizontal: 8),
         width: 120,
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),

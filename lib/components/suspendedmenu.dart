@@ -5,10 +5,10 @@ class SuspendedMenu extends StatelessWidget {
   final String hintText;
 
   const SuspendedMenu({
-    Key? key, 
+    super.key, 
     required this.hintText,
     this.controller, 
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

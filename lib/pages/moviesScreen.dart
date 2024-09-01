@@ -46,7 +46,7 @@ class _TelaFilmeState extends State<TelaFilme> {
   void _navigateToReviews() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => TelaAvaliacoes()),
+      MaterialPageRoute(builder: (context) => ReviewsPage()),
     );
   }
 
