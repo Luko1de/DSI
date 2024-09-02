@@ -126,6 +126,20 @@ class _MoviePageState extends State<MoviePage> {
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Navegue para a página de reviews ao clicar no botão
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ReviewsPage()),
+          );
+        },
+        backgroundColor: Colors.red, // Cor de fundo do botão
+        child: const Icon(
+          Icons.add, // Ícone do botão
+          color: Colors.white, // Cor do ícone
+        ),
+      ),
     );
   }
 }

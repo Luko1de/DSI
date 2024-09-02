@@ -3,7 +3,7 @@ import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'homePage.dart';
 import 'MapPage.dart'; // Adicione a importação
-import 'moviesScreen.dart'; // Importe a tela de detalhes do filme
+import 'MoviePage.dart';
 
 class CatalogScreen extends StatefulWidget {
   @override
@@ -151,7 +151,7 @@ class MovieCard extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => TelaFilme(),
+            builder: (context) => MoviePage(),
           ),
         );
       },
