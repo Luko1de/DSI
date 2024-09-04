@@ -71,7 +71,6 @@ class _TelaFilmeState extends State<TelaFilme> {
                           onTap: _navigateToReviews,
                           child: MovieImage(imagePath: "dune.webp"),
                         ),
-
                         MovieTitle(title: "Dune: Part Two"),
                         MovieDetails(
                           duration: "167 min",
@@ -87,8 +86,17 @@ class _TelaFilmeState extends State<TelaFilme> {
                         GenreChips(genres: ["Aventura", "Ficção Científica"]),
                         SectionTitle(title: "Elenco"),
                         MovieCast(
-                          cast:
-                              "Timothée Chalamet\nZendaya\nRebecca Ferguson\nJavier Bardem\nJosh Brolin\nAustin Butler\nFlorence Pugh\nDave Bautista\nChristopher Walken",
+                          cast: [
+                            "Timothée Chalamet",
+                            "Zendaya",
+                            "Rebecca Ferguson",
+                            "Javier Bardem",
+                            "Josh Brolin",
+                            "Austin Butler",
+                            "Florence Pugh",
+                            "Dave Bautista",
+                            "Christopher Walken"
+                          ],
                         ),
                         SizedBox(height: 64), // Add some spacing at the bottom
                       ],

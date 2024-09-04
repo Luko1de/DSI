@@ -1,156 +1,173 @@
-// lib/pages/tela_favoritos.dart
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
-import '../components/custom_search_bar.dart';
-import '../components/bottom_nav_bar.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import '../components/movie_detail_page.dart';
 import 'HomePage.dart';
 import 'CatalogPage.dart';
 import 'ProfilePage.dart';
 import 'MapPage.dart';
+import 'ReviewsPage.dart';
+import '../components/bottom_nav_bar.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
+
   @override
   _FavoritePageState createState() => _FavoritePageState();
 }
 
 class _FavoritePageState extends State<FavoritePage> {
-  int _currentIndex = 3; // Índice da barra de navegação inferior
+  int _currentIndex = 3;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final User? _currentUser = FirebaseAuth.instance.currentUser;
+
+  Future<List<Map<String, dynamic>>> _fetchFavorites() async {
+    if (_currentUser == null) {
+      print('Nenhum usuário logado.');
+      return [];
+    }
+
+    try {
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(_currentUser!.uid)
+          .collection('favorites')
+          .get();
+
+      if (snapshot.docs.isEmpty) {
+        print('Nenhum favorito encontrado para o usuário.');
+        return [];
+      } else {
+        print('Favoritos encontrados: ${snapshot.docs.length}');
+        return snapshot.docs
+            .map((doc) => doc.data() as Map<String, dynamic>)
+            .toList();
+      }
+    } catch (e) {
+      print('Erro ao buscar favoritos: $e');
+      return [];
+    }
+  }
+
+  void _onFavoriteTapped(Map<String, dynamic> movieData) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetailPage(movieData: movieData),
+      ),
+    );
+  }
 
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
 
-    // Adicione a lógica de navegação para cada item aqui
-    if (index == 0) {
-      // Navegue para a tela inicial
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
-    } else if (index == 1) {
-      // Navegue para a tela de filmes
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => CatalogScreen()),
-      );
-    } else if (index == 2) {
-      // Navegue para a tela de perfil
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ProfilePage()),
-      );
-    } else if (index == 3) {
-      // Navegue para a tela de favoritos
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const FavoritePage()),
-      );
-    } else if (index == 4) {
-      // Navegue para a tela de mapas
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const MapPage()),
-      );
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CatalogPage()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
+        );
+        break;
+      case 3:
+        // Já está na FavoritePage
+        break;
+      case 4:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MapPage()),
+        );
+        break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Exemplo de lista de filmes favoritos
-    final List<String> favoritos = [
-      'assets/dune.webp',
-      'assets/dune.webp',
-      'assets/dune.webp',
-      'assets/dune.webp',
-      'assets/dune.webp',
-      'assets/dune.webp',
-      'assets/dune.webp',
-      'assets/dune.webp',
-      'assets/dune.webp',
-    ];
-
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          color: const Color(0xFFFFFFFF),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Container(
-                  color: const Color(0xFF161616),
-                  width: double.infinity,
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.only(top: 38, bottom: 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 12, left: 37),
-                          child: const Text(
-                            "Favoritos",
-                            style: TextStyle(
-                              color: Color(0xFFFFFFFF),
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        title: const Text('Favoritos'),
+        backgroundColor: Colors.black,
+      ),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: _fetchFavorites(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (snapshot.hasError) {
+            print('Erro ao carregar favoritos: ${snapshot.error}');
+            return const Center(
+              child: Text(
+                'Erro ao carregar favoritos.',
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Center(
+              child: Text(
+                'Nenhum filme favorito encontrado.',
+                style: TextStyle(color: Colors.white),
+              ),
+            );
+          }
+
+          final favoriteMovies = snapshot.data!;
+
+          return GridView.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 3,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+              childAspectRatio: 0.7,
+            ),
+            padding: const EdgeInsets.all(16.0),
+            itemCount: favoriteMovies.length,
+            itemBuilder: (context, index) {
+              final movie = favoriteMovies[index];
+              final posterPath = movie['poster_path'] ?? '';
+              final posterUrl = 'https://image.tmdb.org/t/p/w500$posterPath';
+              final title = movie['title'] ?? 'Título desconhecido';
+
+              return GestureDetector(
+                onTap: () => _onFavoriteTapped(movie),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.network(
+                    posterUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return const Center(
+                        child: Icon(
+                          Icons.broken_image,
+                          color: Colors.white,
+                          size: 50,
                         ),
-                        CustomSearchBar(
-                          onSearch: (query) {
-                            print("Busca realizada por: $query");
-                          },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 20.0,
-                              vertical: 10.0), // Espaço nas laterais e vertical
-                          child: GridView.builder(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3, // 3 filmes por fileira
-                              crossAxisSpacing:
-                                  15, // Espaçamento horizontal entre os filmes
-                              mainAxisSpacing:
-                                  15, // Espaçamento vertical entre os filmes
-                              childAspectRatio: 2 /
-                                  3, // Proporção de aspecto para as imagens dos filmes
-                            ),
-                            itemCount: favoritos.length,
-                            itemBuilder: (context, index) {
-                              return GestureDetector(
-                                onTap: () {
-                                  // Lógica para navegar para a tela de detalhes do filme
-                                },
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(
-                                      12.0), // Bordas arredondadas
-                                  child: Image.asset(
-                                    favoritos[index],
-                                    fit: BoxFit.cover,
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
+                      );
+                    },
                   ),
                 ),
-              ),
-            ],
-          ),
-        ),
+              );
+            },
+          );
+        },
       ),
-
-      //barra de navegação
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,

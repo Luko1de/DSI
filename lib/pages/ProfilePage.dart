@@ -36,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
       // Navegue para a tela de catálogo
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => CatalogScreen()),
+        MaterialPageRoute(builder: (context) => CatalogPage()),
       );
     } else if (index == 2) {
       // Navegue para a tela de perfil

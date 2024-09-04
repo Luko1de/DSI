@@ -31,7 +31,7 @@ class _MapPageState extends State<MapPage> {
       // Navegue para a tela de catálogo
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => CatalogScreen()),
+        MaterialPageRoute(builder: (context) => CatalogPage()),
       );
     } else if (index == 2) {
       // Navegue para a tela de perfil
