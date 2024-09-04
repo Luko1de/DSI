@@ -6,7 +6,6 @@ import 'HomePage.dart';
 import 'CatalogPage.dart';
 import 'ProfilePage.dart';
 import 'MapPage.dart';
-import 'ReviewsPage.dart';
 import '../components/bottom_nav_bar.dart';
 
 class FavoritePage extends StatefulWidget {

@@ -5,54 +5,66 @@ import 'FavoritePage.dart';
 import 'MapPage.dart';
 import '../components/user_profile.dart';
 import '../components/user_info_card.dart';
-import '../components/genre_chips.dart';
+// import '../components/genre_chips.dart'; // Comentado para evitar erros
 import '../components/section_title.dart';
 import '../components/favorite_movies_carousel.dart';
 import '../components/bottom_nav_bar.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  final String? username;
+  final String? email;
+  final String? dateOfBirth;
+  // final List<String>? favoriteGenres; // Comentado para evitar erros
+
+  const ProfilePage({
+    Key? key,
+    this.username,
+    this.email,
+    this.dateOfBirth,
+    // this.favoriteGenres, // Comentado para evitar erros
+  }) : super(key: key);
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  int _currentIndex = 2; // Índice da barra de navegação inferior
+  int _currentIndex = 2;
 
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
     });
 
-    // Adicione a lógica de navegação para cada item aqui
     if (index == 0) {
-      // Navegue para a tela inicial
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } else if (index == 1) {
-      // Navegue para a tela de catálogo
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => CatalogPage()),
       );
     } else if (index == 2) {
-      // Navegue para a tela de perfil
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const ProfilePage()),
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(
+            username: widget.username,
+            email: widget.email,
+            dateOfBirth: widget.dateOfBirth,
+            // favoriteGenres: widget.favoriteGenres, // Comentado para evitar erros
+          ),
+        ),
       );
     } else if (index == 3) {
-      // Navegue para a tela de favoritos
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const FavoritePage()),
       );
     } else if (index == 4) {
-      // Navegue para a tela de mapas
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => const MapPage()),
       );
@@ -79,18 +91,19 @@ class _ProfilePageState extends State<ProfilePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const UserProfileImage(
-                          imageAssetPath: "assets/x.png",
+                          imageAssetPath: "assets/profilepic.png",
                         ),
-                        const UserInfoCard(
-                          title: "Maria Joana Lima",
-                          subtitle: "joaninha@gmail.com",
+                        UserInfoCard(
+                          title: widget.username ?? "Nome não fornecido",
+                          subtitle: widget.email ?? "Email não fornecido",
                           obscurePassword: "***********",
-                          dateOfBirth: "DD/MM/AAAA",
+                          dateOfBirth:
+                              widget.dateOfBirth ?? "Data não fornecida",
                         ),
                         const SectionTitle(title: "Gêneros favoritos"),
-                        const GenreChips(
-                          genres: ["Drama", "Ficção Científica", "Romance"],
-                        ),
+                        // GenreChips(
+                        //   genres: widget.favoriteGenres ?? ["Nenhum gênero selecionado"],
+                        // ), // Comentado para evitar erros
                         const SectionTitle(title: "Favoritos"),
                         FavoriteMoviesCarousel(
                           movieAssetPaths: const [
@@ -113,7 +126,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      // Barra de navegação inferior
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,

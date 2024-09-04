@@ -1,34 +1,57 @@
 import 'package:flutter/material.dart';
-//import 'package:flutter/widgets.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'HomePage.dart';
 import 'SignUpPage.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _login() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } catch (e) {
+      // Exibir erro de login
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao fazer login: ${e.toString()}")),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black, // Cor de fundo
+      backgroundColor: Colors.black,
       body: Container(
         padding: const EdgeInsets.only(top: 120, left: 40, right: 40),
         child: ListView(
           children: [
-            // Logo MOVIEBOX
             SizedBox(
-              width: 288, // Largura do ícone de pipoca
+              width: 288,
               height: 80,
-              child: Image.asset(
-                  'assets/Logo Extendida.png'), // Substitua pelo caminho da imagem do ícone de pipoca
+              child: Image.asset('assets/Logo Extendida.png'),
             ),
-
             const SizedBox(height: 40),
-
             TextFormField(
+              controller: _emailController,
               keyboardType: TextInputType.emailAddress,
               decoration: InputDecoration(
-                prefixIcon:
-                    const Icon(Icons.person, color: Colors.white), // Ícone do usuário
+                prefixIcon: const Icon(Icons.person, color: Colors.white),
                 labelText: "E-mail",
                 labelStyle: const TextStyle(
                   color: Colors.white,
@@ -44,28 +67,24 @@ class LoginPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 filled: true,
-                fillColor: Colors.grey[900], // Fundo do campo
+                fillColor: Colors.grey[900],
               ),
               style: const TextStyle(fontSize: 16, color: Colors.white),
             ),
-
             const SizedBox(height: 20),
-
-            // Campo de Senha
             TextFormField(
+              controller: _passwordController,
               keyboardType: TextInputType.text,
               obscureText: true,
               decoration: InputDecoration(
-                prefixIcon:
-                    const Icon(Icons.lock, color: Colors.white), // Ícone de senha
+                prefixIcon: const Icon(Icons.lock, color: Colors.white),
                 labelText: "Sua senha",
                 labelStyle: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.w400,
                   fontSize: 16,
                 ),
-                suffixIcon: const Icon(Icons.visibility,
-                    color: Colors.white), // Ícone de visibilidade
+                suffixIcon: const Icon(Icons.visibility, color: Colors.white),
                 enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.circular(8),
@@ -75,11 +94,10 @@ class LoginPage extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 filled: true,
-                fillColor: Colors.grey[900], // Fundo do campo
+                fillColor: Colors.grey[900],
               ),
               style: const TextStyle(fontSize: 16, color: Colors.white),
             ),
-
             Container(
               height: 40,
               alignment: Alignment.centerRight,
@@ -91,32 +109,25 @@ class LoginPage extends StatelessWidget {
                   "Esqueceu a senha?",
                   textAlign: TextAlign.right,
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline),
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    decoration: TextDecoration.underline,
+                  ),
                 ),
               ),
             ),
-
-            // Botão de Entrar
             SizedBox(
               width: double.infinity,
               height: 50,
               child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red, // Cor de fundo do botão
+                  backgroundColor: Colors.red,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(32),
                   ),
                 ),
-                onPressed: () {
-                  // Navegar para a HomePage ao clicar no botão de login
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomePage()),
-                  );
-                },
+                onPressed: _login,
                 child: const Text(
                   "Entrar",
                   style: TextStyle(
@@ -127,10 +138,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // Texto "Ou entre com:"
             const Text(
               "Ou entre com:",
               style: TextStyle(
@@ -138,43 +146,41 @@ class LoginPage extends StatelessWidget {
                 fontSize: 16,
               ),
             ),
-
             const SizedBox(height: 20),
-
-            // Ícones de redes sociais
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 IconButton(
                   iconSize: 50,
-                  icon: Image.asset(
-                      'assets/google.png'), // Caminho para a imagem do Google
-                  onPressed: () {},
+                  icon: Image.asset('assets/google.png'),
+                  onPressed: () {
+                    // Adicione a lógica de autenticação do Google aqui
+                  },
                 ),
                 IconButton(
                   iconSize: 50,
-                  icon: Image.asset(
-                      'assets/face.png'), // Caminho para a imagem do Facebook
-                  onPressed: () {},
+                  icon: Image.asset('assets/face.png'),
+                  onPressed: () {
+                    // Adicione a lógica de autenticação do Facebook aqui
+                  },
                 ),
                 IconButton(
                   iconSize: 50,
-                  icon: Image.asset(
-                      'assets/twitter.png'), // Caminho para a imagem do X
-                  onPressed: () {},
+                  icon: Image.asset('assets/twitter.png'),
+                  onPressed: () {
+                    // Adicione a lógica de autenticação do Twitter aqui
+                  },
                 ),
                 IconButton(
                   iconSize: 50,
-                  icon: Image.asset(
-                      'assets/icloud.png'), // Caminho para a imagem da Apple
-                  onPressed: () {},
+                  icon: Image.asset('assets/icloud.png'),
+                  onPressed: () {
+                    // Adicione a lógica de autenticação da Apple aqui
+                  },
                 ),
               ],
             ),
-
             const Spacer(),
-
-            // Texto "Não tem uma conta? Cadastre-se"
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -184,10 +190,10 @@ class LoginPage extends StatelessWidget {
                 ),
                 TextButton(
                   onPressed: () {
-                    // Navegar para SignUpPage ao clicar no botão de cadastro
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignUpPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpPage()),
                     );
                   },
                   child: const Text(
@@ -200,7 +206,6 @@ class LoginPage extends StatelessWidget {
                 ),
               ],
             ),
-
             const SizedBox(height: 20),
           ],
         ),

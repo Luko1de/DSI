@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:testes/components/genre_chips.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'LoginPage.dart';
 import 'ProfilePage.dart';
+import '../components/genre_chips.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -16,12 +17,24 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController birthController = TextEditingController();
 
-  bool _obscurePassword = true; // Estado para controlar a visibilidade da senha
+  bool _obscurePassword = true;
 
   final List<String> genres = [
-    "Ação", "Animação", "Aventura", "Comédia", "Drama",
-    "Documentário", "Fantasia", "Ficção Científica", "Guerra",
-    "Infantil", "Musical", "Romance", "Suspense", "Terror", "Thriller"
+    "Ação",
+    "Animação",
+    "Aventura",
+    "Comédia",
+    "Drama",
+    "Documentário",
+    "Fantasia",
+    "Ficção Científica",
+    "Guerra",
+    "Infantil",
+    "Musical",
+    "Romance",
+    "Suspense",
+    "Terror",
+    "Thriller"
   ];
 
   void _togglePasswordVisibility() {
@@ -30,16 +43,36 @@ class _SignUpPageState extends State<SignUpPage> {
     });
   }
 
-  void _save() {
-    // Navegar para a tela de perfil
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => const ProfilePage()),
-    );
+  Future<void> _register() async {
+    try {
+      // Criar um usuário no Firebase Auth
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text,
+        password: passwordController.text,
+      );
+
+      // Navegar para a tela de perfil com os dados do usuário
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfilePage(
+            username: usernameController.text,
+            email: emailController.text,
+            dateOfBirth: birthController.text,
+            // Inclua outros dados que você deseja passar
+          ),
+        ),
+      );
+    } catch (e) {
+      // Exibir mensagem de erro se houver um problema
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao criar conta: $e')),
+      );
+    }
   }
 
   void _cancel() {
-    // Voltar para a tela de login
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
@@ -58,7 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
   InputDecoration _buildInputDecoration({
     required IconData icon,
     required String label,
-    Widget? suffixIcon, // Adicione o parâmetro suffixIcon
+    Widget? suffixIcon,
   }) {
     return InputDecoration(
       prefixIcon: Icon(icon, color: Colors.white),
@@ -78,7 +111,7 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
       filled: true,
       fillColor: Colors.grey[900],
-      suffixIcon: suffixIcon, // Use o suffixIcon aqui
+      suffixIcon: suffixIcon,
     );
   }
 
@@ -103,9 +136,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     size: 50,
                   ),
                 ),
-                
                 const SizedBox(height: 32),
-                
                 TextFormField(
                   controller: usernameController,
                   decoration: _buildInputDecoration(
@@ -114,9 +145,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
-                
                 const SizedBox(height: 10),
-                
                 TextFormField(
                   controller: emailController,
                   decoration: _buildInputDecoration(
@@ -126,9 +155,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
-                
                 const SizedBox(height: 10),
-                
                 TextFormField(
                   controller: passwordController,
                   obscureText: _obscurePassword,
@@ -138,8 +165,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscurePassword
-                          ? Icons.visibility_off // Ícone para ocultar a senha
-                          : Icons.visibility, // Ícone para mostrar a senha
+                            ? Icons.visibility_off
+                            : Icons.visibility,
                         color: Colors.white,
                       ),
                       onPressed: _togglePasswordVisibility,
@@ -147,9 +174,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
-                
                 const SizedBox(height: 10),
-                
                 TextFormField(
                   controller: birthController,
                   decoration: _buildInputDecoration(
@@ -159,9 +184,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   keyboardType: TextInputType.datetime,
                   style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
-                
                 const SizedBox(height: 20, width: 360),
-                
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -173,25 +196,22 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ),
                 ),
-                
                 const SizedBox(height: 10),
-                
-                GenreChips(genres: genres), // Integrando GenreChips aqui
-                
+                GenreChips(genres: genres),
                 const SizedBox(height: 20),
-                
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
-                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      onPressed: _save,
+                      onPressed: _register,
                       child: const Text(
                         "Salvar",
                         style: TextStyle(color: Colors.white, fontSize: 16),
@@ -200,7 +220,8 @@ class _SignUpPageState extends State<SignUpPage> {
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Colors.white),
-                        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 50),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8),
                         ),
