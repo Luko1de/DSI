@@ -14,12 +14,60 @@ class CatalogPage extends StatefulWidget {
 class _CatalogPageState extends State<CatalogPage> {
   int _currentIndex = 1;
   late Stream<QuerySnapshot> _moviesStream;
+  String _searchQuery = '';
+  String _selectedGenre = 'Todos';
+  final List<String> _genres = [
+    'Todos',
+    'Ação',
+    'Comédia',
+    'Drama',
+    'Terror',
+    'Romance',
+    'Ficção Científica'
+  ];
 
   @override
   void initState() {
     super.initState();
     _moviesStream =
         FirebaseFirestore.instance.collection('movies').limit(20).snapshots();
+  }
+
+  void _updateSearchQuery(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase();
+    });
+  }
+
+  void _updateSelectedGenre(String genre) {
+    setState(() {
+      _selectedGenre = genre;
+    });
+  }
+
+  void _showGenreSelection() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          color: Colors.grey[900],
+          child: ListView(
+            children: _genres.map((genre) {
+              return ListTile(
+                title: Text(
+                  genre,
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  _updateSelectedGenre(genre);
+                  Navigator.pop(context); // Fecha o BottomSheet
+                },
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -52,16 +100,13 @@ class _CatalogPageState extends State<CatalogPage> {
                       ),
                     ),
                     style: TextStyle(color: Colors.white),
-                    onSubmitted: (query) {
-                      // Implementar a funcionalidade de busca com o texto
-                    },
+                    onChanged: _updateSearchQuery,
                   ),
                 ),
                 IconButton(
                   icon: Icon(Icons.filter_list, color: Colors.red),
-                  onPressed: () {
-                    // Implementar a funcionalidade de filtro
-                  },
+                  onPressed:
+                      _showGenreSelection, // Chama o BottomSheet ao clicar no ícone
                 ),
               ],
             ),
@@ -85,7 +130,29 @@ class _CatalogPageState extends State<CatalogPage> {
                   );
                 }
 
-                final movies = snapshot.data!.docs;
+                final movies = snapshot.data!.docs
+                    .where((doc) {
+                      final movie = doc.data() as Map<String, dynamic>;
+                      final title = movie['title']?.toLowerCase() ?? '';
+                      final genre = movie['genres']?.toLowerCase() ?? '';
+
+                      final matchesSearchQuery = title.contains(_searchQuery);
+                      final matchesGenre = _selectedGenre == 'Todos' ||
+                          genre.contains(_selectedGenre.toLowerCase());
+
+                      return matchesSearchQuery && matchesGenre;
+                    })
+                    .take(20)
+                    .toList();
+
+                if (movies.isEmpty) {
+                  return Center(
+                    child: const Text(
+                      'Nenhum filme encontrado.',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  );
+                }
 
                 return GridView.builder(
                   padding: const EdgeInsets.all(10),

@@ -4,6 +4,7 @@ import 'LoginPage.dart';
 import 'ProfilePage.dart';
 import '../components/genre_chips.dart';
 
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
