@@ -155,7 +155,7 @@ class _MapPageState extends State<MapPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(     
+    return Scaffold(
       backgroundColor: Colors.black,
       body: UserPosition == null? CircularProgressIndicator() :
       Column(
@@ -266,5 +266,6 @@ class _MapPageState extends State<MapPage> {
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
       ),
+    );
   }
 }
