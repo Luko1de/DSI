@@ -4,7 +4,6 @@ import 'LoginPage.dart';
 import 'ProfilePage.dart';
 import '../components/genre_chips.dart';
 
-
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
 
@@ -218,6 +217,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
+                    const SizedBox(width: 20),
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Colors.white),

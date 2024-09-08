@@ -1,0 +1,43 @@
+name: testes
+description: A new Flutter project.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.1.5 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.2
+  carousel_slider: ^5.0.0
+  mapbox_gl: ^0.16.0
+  flutter_map: ^7.0.2
+  latlng: ^2.0.7
+  latlong2: ^0.9.1
+  firebase_core: ^3.4.0
+  cloud_firestore: ^5.3.0
+  firebase_auth: ^5.2.0
+  image_picker: ^1.0.0
+  firebase_storage: ^12.2.0
+  path_provider: ^2.0.11
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^4.0.0
+
+flutter:
+  assets:
+    - assets/
+
+  uses-material-design: true
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Poppins-Italic.ttf
+          style: italic

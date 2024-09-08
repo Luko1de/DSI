@@ -7,7 +7,7 @@ import '../components/section_title.dart';
 import '../components/genre_chips.dart';
 import '../components/movie_cast.dart';
 import '../components/movie_synopsis.dart';
-import '../components/bottom_nav_bar.dart';
+import '../components/lateral_nav_bar.dart'; // Importa o componente de menu lateral
 import 'reviewsPage.dart';
 
 class TelaFilme extends StatefulWidget {
@@ -53,6 +53,26 @@ class _TelaFilmeState extends State<TelaFilme> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Detalhes do Filme'),
+        backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
+      ),
+      drawer: LateralNavBar(
+        currentIndex: _selectedIndex,
+        onTap: (index) {
+          _onItemTapped(index);
+          Navigator.pop(context); // Fecha o drawer ao selecionar um item
+        },
+      ),
       body: SafeArea(
         child: Container(
           color: Color(0xFFFFFFFF),
@@ -107,10 +127,6 @@ class _TelaFilmeState extends State<TelaFilme> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

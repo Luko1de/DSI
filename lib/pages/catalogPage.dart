@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:testes/pages/myMovies.dart';
 import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'HomePage.dart';
 import 'MapPage.dart';
 import 'MoviePage.dart';
+import 'myMovies.dart';
 
 class CatalogPage extends StatefulWidget {
   @override
@@ -12,7 +14,6 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
-  int _currentIndex = 1;
   late Stream<QuerySnapshot> _moviesStream;
   String _searchQuery = '';
   String _selectedGenre = 'Todos';
@@ -134,11 +135,15 @@ class _CatalogPageState extends State<CatalogPage> {
                     .where((doc) {
                       final movie = doc.data() as Map<String, dynamic>;
                       final title = movie['title']?.toLowerCase() ?? '';
-                      final genre = movie['genres']?.toLowerCase() ?? '';
+                      final genreString = movie['genres'] as String;
+                      final genres = genreString
+                          .split('-')
+                          .map((g) => g.trim().toLowerCase())
+                          .toList();
 
                       final matchesSearchQuery = title.contains(_searchQuery);
                       final matchesGenre = _selectedGenre == 'Todos' ||
-                          genre.contains(_selectedGenre.toLowerCase());
+                          genres.contains(_selectedGenre.toLowerCase());
 
                       return matchesSearchQuery && matchesGenre;
                     })
@@ -190,63 +195,99 @@ class _CatalogPageState extends State<CatalogPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-        selectedItemColor: Color.fromRGBO(230, 31, 9, 1),
-        unselectedItemColor: Color.fromRGBO(230, 31, 9, 1),
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-          } else if (index == 1) {
-            // Já está na tela de filmes, não é necessário navegação
-          } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
-            );
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => FavoritePage()),
-            );
-          } else if (index == 4) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MapPage()),
-            );
-          } else if (index == 5) {
-            // Lógica para sair
-          }
-        },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Início',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.movie),
-            label: 'Filmes',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favoritos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Mapas',
-          ),
-        ],
+      drawer: Drawer(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.red,
+              width: double.infinity,
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.home, color: Colors.black),
+                    title:
+                        Text('Início', style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.movie, color: Colors.black),
+                    title:
+                        Text('Filmes', style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CatalogPage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.person, color: Colors.black),
+                    title:
+                        Text('Perfil', style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.favorite, color: Colors.black),
+                    title: Text('Favoritos',
+                        style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FavoritePage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.map, color: Colors.black),
+                    title: Text('Mapas', style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MapPage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.star,
+                        color: Colors.black), // Ícone para Meus Filmes
+                    title: Text('Meus Filmes',
+                        style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                MeusFilmesPage()), // Navegação para MyMoviesPage
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
