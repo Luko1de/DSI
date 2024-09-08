@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                 filled: true,
                 fillColor: Colors.grey[900],
               ),
-              style: const TextStyle(fontSize: 16, color: Colors.white),
+              style: const TextStyle(fontSize: 16, color: Colors.white,),
             ),
             const SizedBox(height: 20),
             TextFormField(
@@ -96,8 +96,9 @@ class _LoginPageState extends State<LoginPage> {
                 filled: true,
                 fillColor: Colors.grey[900],
               ),
-              style: const TextStyle(fontSize: 16, color: Colors.white),
+              style: const TextStyle(fontSize: 16, color: Colors.white,),
             ),
+            
             Container(
               height: 40,
               alignment: Alignment.centerRight,
@@ -110,13 +111,14 @@ class _LoginPageState extends State<LoginPage> {
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,
-                    fontSize: 16,
+                    fontSize: 14,
                     fontWeight: FontWeight.bold,
                     decoration: TextDecoration.underline,
                   ),
                 ),
               ),
             ),
+            SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
               height: 50,
@@ -134,59 +136,18 @@ class _LoginPageState extends State<LoginPage> {
                     color: Colors.white,
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
                   ),
                 ),
               ),
             ),
             const SizedBox(height: 20),
-            const Text(
-              "Ou entre com:",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 16,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  iconSize: 50,
-                  icon: Image.asset('assets/google.png'),
-                  onPressed: () {
-                    // Adicione a lógica de autenticação do Google aqui
-                  },
-                ),
-                IconButton(
-                  iconSize: 50,
-                  icon: Image.asset('assets/face.png'),
-                  onPressed: () {
-                    // Adicione a lógica de autenticação do Facebook aqui
-                  },
-                ),
-                IconButton(
-                  iconSize: 50,
-                  icon: Image.asset('assets/twitter.png'),
-                  onPressed: () {
-                    // Adicione a lógica de autenticação do Twitter aqui
-                  },
-                ),
-                IconButton(
-                  iconSize: 50,
-                  icon: Image.asset('assets/icloud.png'),
-                  onPressed: () {
-                    // Adicione a lógica de autenticação da Apple aqui
-                  },
-                ),
-              ],
-            ),
-            const Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
                   "Não tem uma conta?",
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: Colors.white, fontFamily: 'Poppins',),
                 ),
                 TextButton(
                   onPressed: () {
@@ -199,14 +160,16 @@ class _LoginPageState extends State<LoginPage> {
                   child: const Text(
                     "Cadastre-se",
                     style: TextStyle(
-                      color: Colors.red,
+                      color: Colors.white,
                       decoration: TextDecoration.underline,
+                      fontFamily: 'Poppins',
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 20),
           ],
         ),
       ),

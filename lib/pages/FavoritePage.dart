@@ -39,7 +39,7 @@ class _FavoritePageState extends State<FavoritePage> {
       } else {
         print('Favoritos encontrados: ${snapshot.docs.length}');
         return snapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>)
+            .map((doc) => doc.data())
             .toList();
       }
     } catch (e) {
@@ -66,7 +66,7 @@ class _FavoritePageState extends State<FavoritePage> {
       case 0:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) =>  const HomePage()),
         );
         break;
       case 1:
@@ -78,7 +78,7 @@ class _FavoritePageState extends State<FavoritePage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
+          MaterialPageRoute(builder: (context) =>  const ProfilePage()),
         );
         break;
       case 3:
@@ -87,7 +87,7 @@ class _FavoritePageState extends State<FavoritePage> {
       case 4:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MapPage()),
+          MaterialPageRoute(builder: (context) =>  MapPage()),
         );
         break;
     }

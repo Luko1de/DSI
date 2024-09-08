@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../components/bottom_nav_bar.dart';
 import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'HomePage.dart';
@@ -7,6 +8,8 @@ import 'MapPage.dart';
 import 'MoviePage.dart';
 
 class CatalogPage extends StatefulWidget {
+  const CatalogPage({super.key});
+
   @override
   _CatalogPageState createState() => _CatalogPageState();
 }
@@ -14,6 +17,45 @@ class CatalogPage extends StatefulWidget {
 class _CatalogPageState extends State<CatalogPage> {
   int _currentIndex = 1;
   late Stream<QuerySnapshot> _moviesStream;
+
+   void _onItemTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>  const HomePage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CatalogPage()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>  const ProfilePage()),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>  const FavoritePage()),
+        );
+        break;
+      case 4:
+        Navigator.push(
+          context, MaterialPageRoute(builder: (context) =>  MapPage()));
+        break;
+      default:
+        break;
+    }
+  }
 
   @override
   void initState() {
@@ -42,8 +84,8 @@ class _CatalogPageState extends State<CatalogPage> {
                   child: TextField(
                     decoration: InputDecoration(
                       hintText: 'Buscar filmes...',
-                      hintStyle: TextStyle(color: Colors.white54),
-                      prefixIcon: Icon(Icons.search, color: Colors.white),
+                      hintStyle: const TextStyle(color: Colors.white54),
+                      prefixIcon: const Icon(Icons.search, color: Colors.white),
                       filled: true,
                       fillColor: Colors.grey[800],
                       border: OutlineInputBorder(
@@ -51,14 +93,14 @@ class _CatalogPageState extends State<CatalogPage> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: TextStyle(color: Colors.white),
+                    style: const TextStyle(color: Colors.white),
                     onSubmitted: (query) {
                       // Implementar a funcionalidade de busca com o texto
                     },
                   ),
                 ),
                 IconButton(
-                  icon: Icon(Icons.filter_list, color: Colors.red),
+                  icon: const Icon(Icons.filter_list, color: Colors.red),
                   onPressed: () {
                     // Implementar a funcionalidade de filtro
                   },
@@ -71,14 +113,14 @@ class _CatalogPageState extends State<CatalogPage> {
               stream: _moviesStream,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (snapshot.hasError) {
                   return Center(child: Text('Erro: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(
-                    child: const Text(
+                  return const Center(
+                    child: Text(
                       'Nenhum filme encontrado.',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
@@ -123,65 +165,11 @@ class _CatalogPageState extends State<CatalogPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-        selectedItemColor: Color.fromRGBO(230, 31, 9, 1),
-        unselectedItemColor: Color.fromRGBO(230, 31, 9, 1),
+      bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-          if (index == 0) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            );
-          } else if (index == 1) {
-            // Já está na tela de filmes, não é necessário navegação
-          } else if (index == 2) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProfilePage()),
-            );
-          } else if (index == 3) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => FavoritePage()),
-            );
-          } else if (index == 4) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => MapPage()),
-            );
-          } else if (index == 5) {
-            // Lógica para sair
-          }
-        },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Início',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.movie),
-            label: 'Filmes',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Perfil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: 'Favoritos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Mapas',
-          ),
-        ],
+        onTap: _onItemTapped,
       ),
-    );
+      );
   }
 }
 
@@ -191,11 +179,11 @@ class MovieCard extends StatelessWidget {
   final VoidCallback onTap;
 
   const MovieCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.poster,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -215,7 +203,7 @@ class MovieCard extends StatelessWidget {
                         fit: BoxFit.cover,
                         width: double.infinity,
                         errorBuilder: (context, error, stackTrace) {
-                          return Center(
+                          return const Center(
                             child: Icon(
                               Icons.broken_image,
                               color: Colors.white,

@@ -51,15 +51,15 @@ class _ReviewsPageState extends State<ReviewsPage> {
         break;
       case 2:
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ProfilePage()));
+            MaterialPageRoute(builder: (context) =>  const ProfilePage()));
         break;
       case 3:
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const FavoritePage()));
+            MaterialPageRoute(builder: (context) =>  const FavoritePage()));
         break;
       case 4:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const MapPage()));
+           context, MaterialPageRoute(builder: (context) =>  MapPage()));
         break;
     }
   }
@@ -163,16 +163,16 @@ class _ReviewsPageState extends State<ReviewsPage> {
   @override
   Widget build(BuildContext context) {
     final movieId = ModalRoute.of(context)?.settings.arguments as String? ?? '';
-    final movieTitle = 'Título do Filme'; // Ajuste para o título correto
-    final moviePosterUrl =
+    const movieTitle = 'Título do Filme'; // Ajuste para o título correto
+    const moviePosterUrl =
         '/path/to/poster'; // Ajuste para o caminho do poster correto
 
     if (movieId.isEmpty) {
       // Exibe uma mensagem de erro se o movieId estiver vazio
-      return Scaffold(
+      return const Scaffold(
         backgroundColor: Colors.black,
         body: Center(
-          child: const Text(
+          child: Text(
             'ID do filme não encontrado.',
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
@@ -346,7 +346,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
         const SizedBox(width: 8),
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
             color: Colors.white,

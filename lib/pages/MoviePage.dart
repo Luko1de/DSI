@@ -6,11 +6,9 @@ import 'CatalogPage.dart';
 import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'MapPage.dart';
-import '../components/movie_image.dart';
 import '../components/movie_title.dart';
 import '../components/movie_details.dart';
 import '../components/section_title.dart';
-import '../components/genre_chips.dart';
 import '../components/movie_cast.dart';
 import '../components/movie_synopsis.dart';
 import '../components/bottom_nav_bar.dart';
@@ -41,11 +39,10 @@ class _MoviePageState extends State<MoviePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ReviewsPage(),
+        builder: (context) => const ReviewsPage(),
         settings: RouteSettings(arguments: widget.movieId),
       ),
     );
-    ;
   }
 
   void _onItemTapped(int index) {
@@ -57,7 +54,7 @@ class _MoviePageState extends State<MoviePage> {
       case 0:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) =>  const HomePage()),
         );
         break;
       case 1:
@@ -69,20 +66,18 @@ class _MoviePageState extends State<MoviePage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
+          MaterialPageRoute(builder: (context) =>  const ProfilePage()),
         );
         break;
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const FavoritePage()),
+          MaterialPageRoute(builder: (context) =>  const FavoritePage()),
         );
         break;
       case 4:
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MapPage()),
-        );
+          context, MaterialPageRoute(builder: (context) =>  MapPage()));
         break;
       default:
         break;
@@ -97,11 +92,11 @@ class _MoviePageState extends State<MoviePage> {
           future: _movieData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
-              return Center(child: Text('Filme não encontrado.'));
+              return const Center(child: Text('Filme não encontrado.'));
             }
 
             final movie = snapshot.data!.data() as Map<String, dynamic>;

@@ -9,8 +9,14 @@ import '../components/movie_cast.dart';
 import '../components/movie_synopsis.dart';
 import '../components/bottom_nav_bar.dart';
 import 'reviewsPage.dart';
+import 'catalogPage.dart';
+import 'profilePage.dart';
+import 'favoritePage.dart';
+import 'mapPage.dart';
 
 class TelaFilme extends StatefulWidget {
+  const TelaFilme({super.key});
+
   @override
   _TelaFilmeState createState() => _TelaFilmeState();
 }
@@ -21,21 +27,24 @@ class _TelaFilmeState extends State<TelaFilme> {
   void _onItemTapped(int index) {
     switch (index) {
       case 0:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
         break;
       case 1:
-        // Já está na tela de Filmes
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => CatalogPage()));
         break;
       case 2:
-        // Navegar para a tela de Perfil (a ser implementada)
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ProfilePage()));
         break;
       case 3:
-        // Navegar para a tela de Sair (a ser implementada)
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) =>  FavoritePage()));
         break;
-      default:
+      case 4:
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) =>  MapPage()));
         break;
     }
     setState(() {
@@ -46,7 +55,7 @@ class _TelaFilmeState extends State<TelaFilme> {
   void _navigateToReviews() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ReviewsPage()),
+      MaterialPageRoute(builder: (context) => const ReviewsPage()),
     );
   }
 
@@ -55,37 +64,37 @@ class _TelaFilmeState extends State<TelaFilme> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          color: Color(0xFFFFFFFF),
+          color: const Color(0xFFFFFFFF),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: Container(
-                  color: Color(0xFF161616),
+                  color: const Color(0xFF161616),
                   child: SingleChildScrollView(
-                    padding: EdgeInsets.symmetric(vertical: 32),
+                    padding: const EdgeInsets.symmetric(vertical: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         GestureDetector(
                           onTap: _navigateToReviews,
-                          child: MovieImage(imagePath: "dune.webp"),
+                          child: const MovieImage(imagePath: "dune.webp"),
                         ),
-                        MovieTitle(title: "Dune: Part Two"),
-                        MovieDetails(
+                        const MovieTitle(title: "Dune: Part Two"),
+                        const MovieDetails(
                           duration: "167 min",
                           year: "2024",
                           rating: "8.3",
                         ),
-                        SectionTitle(title: "Sinopse"),
-                        MovieSynopsis(
+                        const SectionTitle(title: "Sinopse"),
+                        const MovieSynopsis(
                           synopsis:
                               "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
                         ),
-                        SectionTitle(title: "Gênero"),
-                        GenreChips(genres: ["Aventura", "Ficção Científica"]),
-                        SectionTitle(title: "Elenco"),
-                        MovieCast(
+                        const SectionTitle(title: "Gênero"),
+                        const GenreChips(genres: ["Aventura", "Ficção Científica"]),
+                        const SectionTitle(title: "Elenco"),
+                        const MovieCast(
                           cast: [
                             "Timothée Chalamet",
                             "Zendaya",
@@ -98,7 +107,7 @@ class _TelaFilmeState extends State<TelaFilme> {
                             "Christopher Walken"
                           ],
                         ),
-                        SizedBox(height: 64), // Add some spacing at the bottom
+                        const SizedBox(height: 64), // Add some spacing at the bottom
                       ],
                     ),
                   ),

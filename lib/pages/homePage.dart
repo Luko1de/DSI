@@ -40,20 +40,18 @@ class _HomePageState extends State<HomePage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
+          MaterialPageRoute(builder: (context) =>  const ProfilePage()),
         );
         break;
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const FavoritePage()),
+          MaterialPageRoute(builder: (context) =>  const FavoritePage()),
         );
         break;
       case 4:
         Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const MapPage()),
-        );
+          context, MaterialPageRoute(builder: (context) =>  MapPage()));
         break;
       default:
         break;
@@ -162,15 +160,15 @@ class _HomePageState extends State<HomePage> {
           .collection('movies')
           .where('genres', isGreaterThanOrEqualTo: genreId)
           .where('genres',
-              isLessThanOrEqualTo: genreId + '\uf8ff') // Filtro por string
+              isLessThanOrEqualTo: '$genreId\uf8ff') // Filtro por string
           .limit(10)
           .get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(
+          return const Center(
               child: Text('Nenhum filme encontrado.',
                   style: TextStyle(color: Colors.white)));
         }

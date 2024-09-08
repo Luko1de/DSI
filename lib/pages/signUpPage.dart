@@ -75,7 +75,7 @@ class _SignUpPageState extends State<SignUpPage> {
   void _cancel() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => const LoginPage()),
     );
   }
 

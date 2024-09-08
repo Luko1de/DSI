@@ -17,12 +17,12 @@ class ProfilePage extends StatefulWidget {
   // final List<String>? favoriteGenres; // Comentado para evitar erros
 
   const ProfilePage({
-    Key? key,
+    super.key,
     this.username,
     this.email,
     this.dateOfBirth,
     // this.favoriteGenres, // Comentado para evitar erros
-  }) : super(key: key);
+  });
 
   @override
   _ProfilePageState createState() => _ProfilePageState();
@@ -65,9 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
       );
     } else if (index == 4) {
       Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const MapPage()),
-      );
+        context, MaterialPageRoute(builder: (context) =>  MapPage()));
     }
   }
 
