@@ -7,9 +7,10 @@ class GenreChips extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IntrinsicHeight(
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 36, vertical: 26),
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 36, vertical: 26),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
         child: Row(
           children: genres
               .map((genre) => Padding(

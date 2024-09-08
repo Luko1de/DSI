@@ -8,7 +8,7 @@ class MovieTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 104),
+      margin: const EdgeInsets.symmetric(vertical: 20, horizontal: 562),
       child: Text(
         title,
         style: const TextStyle(
