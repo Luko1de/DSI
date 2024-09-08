@@ -6,23 +6,25 @@ import 'CatalogPage.dart';
 import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'MapPage.dart';
+import '../components/movie_image.dart';
 import '../components/movie_title.dart';
 import '../components/movie_details.dart';
 import '../components/section_title.dart';
+import '../components/genre_chips.dart';
 import '../components/movie_cast.dart';
 import '../components/movie_synopsis.dart';
 import '../components/lateral_nav_bar.dart';
 
-class MoviePage extends StatefulWidget {
+class AddedMoviePage extends StatefulWidget {
   final String movieId;
 
-  const MoviePage({super.key, required this.movieId});
+  const AddedMoviePage({super.key, required this.movieId});
 
   @override
-  _MoviePageState createState() => _MoviePageState();
+  _AddedMoviePageState createState() => _AddedMoviePageState();
 }
 
-class _MoviePageState extends State<MoviePage> {
+class _AddedMoviePageState extends State<AddedMoviePage> {
   int _currentIndex = 1;
   late Future<DocumentSnapshot> _movieData;
 
@@ -30,7 +32,7 @@ class _MoviePageState extends State<MoviePage> {
   void initState() {
     super.initState();
     _movieData = FirebaseFirestore.instance
-        .collection('movies')
+        .collection('filmes')
         .doc(widget.movieId)
         .get();
   }
@@ -39,7 +41,7 @@ class _MoviePageState extends State<MoviePage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => const ReviewsPage(),
+        builder: (context) => ReviewsPage(),
         settings: RouteSettings(arguments: widget.movieId),
       ),
     );
@@ -55,7 +57,7 @@ class _MoviePageState extends State<MoviePage> {
       case 0:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  const HomePage()),
+          MaterialPageRoute(builder: (context) => const HomePage()),
         );
         break;
       case 1:
@@ -67,18 +69,20 @@ class _MoviePageState extends State<MoviePage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  const ProfilePage()),
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
         );
         break;
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) =>  const FavoritePage()),
+          MaterialPageRoute(builder: (context) => const FavoritePage()),
         );
         break;
       case 4:
         Navigator.push(
-          context, MaterialPageRoute(builder: (context) =>  MapPage()));
+          context,
+          MaterialPageRoute(builder: (context) => const MapPage()),
+        );
         break;
       default:
         break;
@@ -89,14 +93,14 @@ class _MoviePageState extends State<MoviePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Detalhes do Filme',
           style: TextStyle(color: Colors.white),
         ),
         backgroundColor: Colors.black,
         leading: Builder(
           builder: (context) => IconButton(
-            icon: Icon(Icons.menu),
+            icon: const Icon(Icons.menu, color: Colors.white),
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
@@ -119,14 +123,22 @@ class _MoviePageState extends State<MoviePage> {
 
             final movie = snapshot.data!.data() as Map<String, dynamic>;
 
-            final posterPath = movie['poster_path'] ?? '';
-            final posterUrl = 'https://image.tmdb.org/t/p/w500$posterPath';
+            final posterPath = movie['imagem'] ?? '';
+            final posterUrl = posterPath.isNotEmpty
+                ? posterPath
+                : 'https://image.tmdb.org/t/p/w500/default_poster.png';
 
-            final genresString = movie['genres'] ?? '';
-            final genresList = genresString.split('-');
+            // Corrigindo a conversão dos gêneros
+            final genresData = movie['genero'] ?? [];
+            final genresList = genresData is List
+                ? genresData.map((e) => e.toString()).toList()
+                : <String>[];
 
-            final castString = movie['credits'] ?? '';
-            final castList = castString.split('-');
+            // Corrigindo a conversão do elenco
+            final castData = movie['elenco'] ?? '';
+            final castList = castData is String
+                ? castData.split(',').map((e) => e.trim()).toList()
+                : <String>[];
 
             return Container(
               color: const Color(0xFFFFFFFF),
@@ -150,25 +162,26 @@ class _MoviePageState extends State<MoviePage> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(16),
                                   child: Image.network(
+                                    posterUrl,
                                     height: 400,
                                     width: 300,
-                                    alignment: Alignment.center,
-                                    posterUrl,
                                     fit: BoxFit.cover,
                                     errorBuilder: (context, error, stackTrace) {
                                       return Image.asset(
-                                          'assets/default_poster.png',
-                                          fit: BoxFit.cover);
+                                        'assets/default_poster.png',
+                                        fit: BoxFit.cover,
+                                      );
                                     },
                                   ),
                                 ),
                               ),
                             ),
                             MovieTitle(
-                                title: movie['title'] ?? 'Título do Filme'),
+                              title: movie['nome'] ?? 'Título do Filme',
+                            ),
                             MovieDetails(
-                              duration:
-                                  movie['runtime'] ?? 'Duração não disponível',
+                              duration: movie['duracao']?.toString() ??
+                                  'Duração não disponível',
                               year: movie['release_date']?.substring(0, 4) ??
                                   'Ano não disponível',
                               rating: movie['vote_average']?.toString() ??
@@ -176,8 +189,8 @@ class _MoviePageState extends State<MoviePage> {
                             ),
                             const SectionTitle(title: "Sinopse"),
                             MovieSynopsis(
-                              synopsis: movie['overview'] ??
-                                  'Sinopse não disponível.',
+                              synopsis:
+                                  movie['sinopse'] ?? 'Sinopse não disponível.',
                             ),
                             const SectionTitle(title: "Gênero"),
                             GenreChips(

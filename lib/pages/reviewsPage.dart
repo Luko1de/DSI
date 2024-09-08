@@ -6,7 +6,7 @@ import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'MapPage.dart';
 import 'CatalogPage.dart';
-import '../components/bottom_nav_bar.dart';
+import '../components/lateral_nav_bar.dart';
 
 class ReviewsPage extends StatefulWidget {
   const ReviewsPage({super.key});
@@ -16,7 +16,7 @@ class ReviewsPage extends StatefulWidget {
 }
 
 class _ReviewsPageState extends State<ReviewsPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 0; // Índice atual da página
   String? _selectedOption;
   bool _isFavorite = false;
   bool _isWatched = false;
@@ -42,24 +42,24 @@ class _ReviewsPageState extends State<ReviewsPage> {
 
     switch (index) {
       case 0:
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const HomePage()));
         break;
       case 1:
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => CatalogPage()));
         break;
       case 2:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) =>  const ProfilePage()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const ProfilePage()));
         break;
       case 3:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) =>  const FavoritePage()));
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const FavoritePage()));
         break;
       case 4:
-        Navigator.push(
-           context, MaterialPageRoute(builder: (context) =>  MapPage()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const MapPage()));
         break;
     }
   }
@@ -83,7 +83,6 @@ class _ReviewsPageState extends State<ReviewsPage> {
         .doc(movieId);
 
     try {
-      // Adicionar aos favoritos com título e caminho do poster
       await favoriteRef.set({
         'title': title,
         'poster_path': posterPath,
@@ -96,7 +95,6 @@ class _ReviewsPageState extends State<ReviewsPage> {
         ),
       );
     } catch (error) {
-      // Exibe a mensagem de erro detalhada
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erro ao adicionar aos favoritos: $error'),
@@ -126,7 +124,6 @@ class _ReviewsPageState extends State<ReviewsPage> {
     };
 
     try {
-      // Salva a avaliação no Firestore
       await _firestore
           .collection('users')
           .doc(_currentUser?.uid)
@@ -134,7 +131,6 @@ class _ReviewsPageState extends State<ReviewsPage> {
           .doc(movieId)
           .set(review);
 
-      // Exibe um SnackBar confirmando o salvamento da avaliação
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Avaliação salva com sucesso.'),
@@ -142,15 +138,12 @@ class _ReviewsPageState extends State<ReviewsPage> {
         ),
       );
 
-      // Adiciona o filme aos favoritos, se marcado
       if (_isFavorite) {
         await _addToFavorites(movieId, title, posterPath);
       }
 
-      // Retorna à página anterior
       Navigator.pop(context);
     } catch (error) {
-      // Exibe a mensagem de erro detalhada
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erro ao salvar a avaliação: $error'),
@@ -168,8 +161,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
         '/path/to/poster'; // Ajuste para o caminho do poster correto
 
     if (movieId.isEmpty) {
-      // Exibe uma mensagem de erro se o movieId estiver vazio
-      return const Scaffold(
+      return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
           child: Text(
@@ -306,27 +298,21 @@ class _ReviewsPageState extends State<ReviewsPage> {
                   _saveReview(movieId, movieTitle, moviePosterUrl);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                  backgroundColor: Colors
+                      .red, // Fix the named parameter to 'backgroundColor'
                   padding:
                       const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
                 child: const Text(
                   'Salvar Avaliação',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(
+      drawer: LateralNavBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
       ),
@@ -334,32 +320,23 @@ class _ReviewsPageState extends State<ReviewsPage> {
   }
 
   Widget _buildToggleRow(String label, IconData icon, bool value,
-      Color activeColor, VoidCallback onChanged) {
+      Color activeColor, VoidCallback onPressed) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          color: value ? activeColor : _inactiveColor,
-          size: 24.0,
+        IconButton(
+          icon: Icon(
+            icon,
+            color: value ? activeColor : _inactiveColor,
+            size: 30,
+          ),
+          onPressed: onPressed,
         ),
-        const SizedBox(width: 8),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+          style: TextStyle(
+            fontSize: 18,
+            color: value ? activeColor : _inactiveColor,
           ),
-        ),
-        const Spacer(),
-        Switch(
-          value: value,
-          onChanged: (bool newValue) {
-            onChanged();
-          },
-          activeColor: activeColor,
-          inactiveThumbColor: _inactiveColor,
         ),
       ],
     );

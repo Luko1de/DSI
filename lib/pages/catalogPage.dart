@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../components/bottom_nav_bar.dart';
+import 'package:testes/pages/myMovies.dart';
 import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'HomePage.dart';
 import 'MapPage.dart';
 import 'MoviePage.dart';
+import 'myMovies.dart';
 
 class CatalogPage extends StatefulWidget {
   const CatalogPage({super.key});
@@ -15,53 +16,61 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
-  int _currentIndex = 1;
   late Stream<QuerySnapshot> _moviesStream;
-
-   void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-
-    switch (index) {
-      case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>  const HomePage()),
-        );
-        break;
-      case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CatalogPage()),
-        );
-        break;
-      case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>  const ProfilePage()),
-        );
-        break;
-      case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) =>  const FavoritePage()),
-        );
-        break;
-      case 4:
-        Navigator.push(
-          context, MaterialPageRoute(builder: (context) =>  MapPage()));
-        break;
-      default:
-        break;
-    }
-  }
+  String _searchQuery = '';
+  String _selectedGenre = 'Todos';
+  final List<String> _genres = [
+    'Todos',
+    'Ação',
+    'Comédia',
+    'Drama',
+    'Terror',
+    'Romance',
+    'Ficção Científica'
+  ];
 
   @override
   void initState() {
     super.initState();
     _moviesStream =
         FirebaseFirestore.instance.collection('movies').limit(20).snapshots();
+  }
+
+  void _updateSearchQuery(String query) {
+    setState(() {
+      _searchQuery = query.toLowerCase();
+    });
+  }
+
+  void _updateSelectedGenre(String genre) {
+    setState(() {
+      _selectedGenre = genre;
+    });
+  }
+
+  void _showGenreSelection() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          color: Colors.grey[900],
+          child: ListView(
+            children: _genres.map((genre) {
+              return ListTile(
+                title: Text(
+                  genre,
+                  style: TextStyle(color: Colors.white),
+                ),
+                onTap: () {
+                  _updateSelectedGenre(genre);
+                  Navigator.pop(context); // Fecha o BottomSheet
+                },
+              );
+            }).toList(),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -93,17 +102,14 @@ class _CatalogPageState extends State<CatalogPage> {
                         borderSide: BorderSide.none,
                       ),
                     ),
-                    style: const TextStyle(color: Colors.white),
-                    onSubmitted: (query) {
-                      // Implementar a funcionalidade de busca com o texto
-                    },
+                    style: TextStyle(color: Colors.white),
+                    onChanged: _updateSearchQuery,
                   ),
                 ),
                 IconButton(
-                  icon: const Icon(Icons.filter_list, color: Colors.red),
-                  onPressed: () {
-                    // Implementar a funcionalidade de filtro
-                  },
+                  icon: Icon(Icons.filter_list, color: Colors.red),
+                  onPressed:
+                      _showGenreSelection, // Chama o BottomSheet ao clicar no ícone
                 ),
               ],
             ),
@@ -119,15 +125,41 @@ class _CatalogPageState extends State<CatalogPage> {
                   return Center(child: Text('Erro: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return const Center(
-                    child: Text(
+                  return Center(
+                    child: const Text(
                       'Nenhum filme encontrado.',
                       style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                   );
                 }
 
-                final movies = snapshot.data!.docs;
+                final movies = snapshot.data!.docs
+                    .where((doc) {
+                      final movie = doc.data() as Map<String, dynamic>;
+                      final title = movie['title']?.toLowerCase() ?? '';
+                      final genreString = movie['genres'] as String;
+                      final genres = genreString
+                          .split('-')
+                          .map((g) => g.trim().toLowerCase())
+                          .toList();
+
+                      final matchesSearchQuery = title.contains(_searchQuery);
+                      final matchesGenre = _selectedGenre == 'Todos' ||
+                          genres.contains(_selectedGenre.toLowerCase());
+
+                      return matchesSearchQuery && matchesGenre;
+                    })
+                    .take(20)
+                    .toList();
+
+                if (movies.isEmpty) {
+                  return Center(
+                    child: const Text(
+                      'Nenhum filme encontrado.',
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                    ),
+                  );
+                }
 
                 return GridView.builder(
                   padding: const EdgeInsets.all(10),
@@ -165,9 +197,99 @@ class _CatalogPageState extends State<CatalogPage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
+      drawer: Drawer(
+        child: Column(
+          children: [
+            Container(
+              color: Colors.red,
+              width: double.infinity,
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Menu',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                padding: EdgeInsets.zero,
+                children: [
+                  ListTile(
+                    leading: Icon(Icons.home, color: Colors.black),
+                    title:
+                        Text('Início', style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => HomePage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.movie, color: Colors.black),
+                    title:
+                        Text('Filmes', style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => CatalogPage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.person, color: Colors.black),
+                    title:
+                        Text('Perfil', style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => ProfilePage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.favorite, color: Colors.black),
+                    title: Text('Favoritos',
+                        style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => FavoritePage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.map, color: Colors.black),
+                    title: Text('Mapas', style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => MapPage()),
+                      );
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.star,
+                        color: Colors.black), // Ícone para Meus Filmes
+                    title: Text('Meus Filmes',
+                        style: TextStyle(color: Colors.black)),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                MeusFilmesPage()), // Navegação para MyMoviesPage
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       );
   }

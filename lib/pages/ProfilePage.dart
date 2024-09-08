@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:testes/pages/myMovies.dart';
 import 'HomePage.dart';
 import 'CatalogPage.dart';
 import 'FavoritePage.dart';
@@ -8,7 +9,8 @@ import '../components/user_info_card.dart';
 // import '../components/genre_chips.dart'; // Comentado para evitar erros
 import '../components/section_title.dart';
 import '../components/favorite_movies_carousel.dart';
-import '../components/bottom_nav_bar.dart';
+import '../components/lateral_nav_bar.dart';
+import 'myMovies.dart';
 
 class ProfilePage extends StatefulWidget {
   final String? username;
@@ -36,42 +38,73 @@ class _ProfilePageState extends State<ProfilePage> {
       _currentIndex = index;
     });
 
-    if (index == 0) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
-    } else if (index == 1) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => CatalogPage()),
-      );
-    } else if (index == 2) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ProfilePage(
-            username: widget.username,
-            email: widget.email,
-            dateOfBirth: widget.dateOfBirth,
-            // favoriteGenres: widget.favoriteGenres, // Comentado para evitar erros
-          ),
-        ),
-      );
-    } else if (index == 3) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const FavoritePage()),
-      );
-    } else if (index == 4) {
-      Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) =>  MapPage()));
+    switch (index) {
+      case 0:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+        break;
+      case 1:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CatalogPage()),
+        );
+        break;
+      case 2:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const ProfilePage()),
+        );
+        break;
+      case 3:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const FavoritePage()),
+        );
+        break;
+      case 4:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const MapPage()),
+        );
+        break;
+      case 5:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      default:
+        break;
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Perfil'),
+        backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
+      ),
+      drawer: LateralNavBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          _onItemTapped(index);
+          Navigator.pop(context); // Fecha o drawer ao selecionar um item
+        },
+      ),
       body: SafeArea(
         child: Container(
           constraints: const BoxConstraints.expand(),
@@ -107,7 +140,6 @@ class _ProfilePageState extends State<ProfilePage> {
                           movieAssetPaths: const [
                             "assets/images/movie1.png",
                             "assets/images/movie2.png",
-                            "assets/images/movie3.png",
                           ],
                           onMovieTap: (assetPath) {
                             Navigator.pushNamed(context, '/filmePage');
@@ -123,10 +155,6 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

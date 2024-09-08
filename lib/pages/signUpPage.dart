@@ -217,6 +217,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         style: TextStyle(color: Colors.white, fontSize: 16),
                       ),
                     ),
+                    const SizedBox(width: 20),
                     OutlinedButton(
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Colors.white),

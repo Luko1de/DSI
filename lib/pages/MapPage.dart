@@ -266,6 +266,5 @@ class _MapPageState extends State<MapPage> {
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
       ),
-    );
   }
 }

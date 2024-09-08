@@ -6,7 +6,7 @@ import 'HomePage.dart';
 import 'CatalogPage.dart';
 import 'ProfilePage.dart';
 import 'MapPage.dart';
-import '../components/bottom_nav_bar.dart';
+import '../components/lateral_nav_bar.dart'; // Importar o componente da barra lateral
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -96,6 +96,10 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: LateralNavBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+      ),
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('Favoritos'),
@@ -166,10 +170,6 @@ class _FavoritePageState extends State<FavoritePage> {
             },
           );
         },
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

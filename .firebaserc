@@ -1,0 +1,10 @@
+{
+  "projects": {
+    "firebase use MovieBox2": "moviebox2-4dbd3",
+    "flutter use moviebox2": "moviebox2-4dbd3",
+    "firebase use moviebox2": "moviebox2-4dbd3"
+  },
+  "targets": {},
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}
