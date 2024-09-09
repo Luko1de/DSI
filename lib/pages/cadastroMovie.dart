@@ -197,7 +197,7 @@ class _TelaDeCadastroDeFilmeState extends State<TelaDeCadastroDeFilme> {
       case 4:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MapPage()),
+          MaterialPageRoute(builder: (context) => MapPage()),
         );
         break;
       default:

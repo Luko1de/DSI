@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Cinemas.dart';
 import 'homePage.dart'; // Importa a tela de início
 import '../components/movie_image.dart';
 import '../components/movie_title.dart';
@@ -8,6 +9,7 @@ import '../components/genre_chips.dart';
 import '../components/movie_cast.dart';
 import '../components/movie_synopsis.dart';
 import '../components/lateral_nav_bar.dart'; // Importa o componente de menu lateral
+import 'myMovies.dart';
 import 'reviewsPage.dart';
 import 'catalogPage.dart';
 import 'profilePage.dart';
@@ -45,6 +47,21 @@ class _TelaFilmeState extends State<TelaFilme> {
       case 4:
         Navigator.push(
             context, MaterialPageRoute(builder: (context) =>  MapPage()));
+        break;
+      case 5:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Cinemas()),
+        );
         break;
     }
     setState(() {

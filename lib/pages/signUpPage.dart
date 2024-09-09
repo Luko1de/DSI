@@ -20,21 +20,11 @@ class _SignUpPageState extends State<SignUpPage> {
   bool _obscurePassword = true;
 
   final List<String> genres = [
-    "Ação",
-    "Animação",
-    "Aventura",
-    "Comédia",
-    "Drama",
-    "Documentário",
-    "Fantasia",
-    "Ficção Científica",
-    "Guerra",
-    "Infantil",
-    "Musical",
-    "Romance",
-    "Suspense",
-    "Terror",
-    "Thriller"
+    "Ação", "Animação", "Aventura",
+    "Comédia", "Drama", "Documentário",
+    "Fantasia", "Ficção Científica", "Guerra",
+    "Infantil", "Musical", "Romance","Suspense",
+    "Terror", "Thriller"
   ];
 
   void _togglePasswordVisibility() {
@@ -206,9 +196,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 50),
+                            vertical: 15, horizontal: 48),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(32),
                         ),
                       ),
                       onPressed: _register,
@@ -222,9 +212,9 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: OutlinedButton.styleFrom(
                         side: const BorderSide(color: Colors.white),
                         padding: const EdgeInsets.symmetric(
-                            vertical: 15, horizontal: 50),
+                            vertical: 15, horizontal: 48),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(32),
                         ),
                       ),
                       onPressed: _cancel,
@@ -235,6 +225,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                   ],
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),

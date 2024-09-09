@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'Cinemas.dart';
 import 'HomePage.dart';
 import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'MapPage.dart';
 import 'CatalogPage.dart';
 import '../components/lateral_nav_bar.dart';
+import 'myMovies.dart';
 
 class ReviewsPage extends StatefulWidget {
   const ReviewsPage({super.key});
@@ -59,7 +61,22 @@ class _ReviewsPageState extends State<ReviewsPage> {
         break;
       case 4:
         Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => const MapPage()));
+            context, MaterialPageRoute(builder: (context) => MapPage()));
+        break;
+      case 5:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Cinemas()),
+        );
         break;
     }
   }
@@ -175,13 +192,24 @@ class _ReviewsPageState extends State<ReviewsPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        title: const Text('Perfil'),
+        backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
+      ),
+      drawer: LateralNavBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          _onItemTapped(index);
+          Navigator.pop(context); // Fecha o drawer ao selecionar um item
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
@@ -311,10 +339,6 @@ class _ReviewsPageState extends State<ReviewsPage> {
             ),
           ],
         ),
-      ),
-      drawer: LateralNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

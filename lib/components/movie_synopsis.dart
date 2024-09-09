@@ -13,7 +13,7 @@ class MovieSynopsis extends StatelessWidget {
         synopsis,
         style: const TextStyle(
           color: Color(0xFFFAFAFA),
-          fontSize: 12,
+          fontSize: 14,
         ),
       ),
     );

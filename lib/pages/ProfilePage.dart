@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:testes/pages/myMovies.dart';
+import 'Cinemas.dart';
 import 'HomePage.dart';
 import 'CatalogPage.dart';
 import 'FavoritePage.dart';
@@ -66,7 +67,7 @@ class _ProfilePageState extends State<ProfilePage> {
       case 4:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MapPage()),
+          MaterialPageRoute(builder: (context) => MapPage()),
         );
         break;
       case 5:
@@ -75,6 +76,13 @@ class _ProfilePageState extends State<ProfilePage> {
           MaterialPageRoute(
               builder: (context) =>
                   const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Cinemas()),
         );
         break;
       default:

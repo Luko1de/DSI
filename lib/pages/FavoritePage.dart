@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../components/movie_detail_page.dart';
+import 'Cinemas.dart';
 import 'HomePage.dart';
 import 'CatalogPage.dart';
 import 'ProfilePage.dart';
 import 'MapPage.dart';
-import '../components/lateral_nav_bar.dart'; // Importar o componente da barra lateral
+import '../components/lateral_nav_bar.dart';
+import 'myMovies.dart'; // Importar o componente da barra lateral
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -88,6 +90,21 @@ class _FavoritePageState extends State<FavoritePage> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) =>  MapPage()),
+        );
+        break;
+      case 5:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Cinemas()),
         );
         break;
     }

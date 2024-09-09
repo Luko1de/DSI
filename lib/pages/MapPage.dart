@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 //navbar
 import 'package:testes/pages/FavoritePage.dart';
 import 'package:testes/pages/ProfilePage.dart';
 import 'package:testes/pages/SignUpCinemas.dart';
 import 'package:testes/pages/catalogPage.dart';
 import 'package:testes/pages/homePage.dart';
-import '../components/bottom_nav_bar.dart';
+import 'package:testes/pages/myMovies.dart';
+import 'Cinemas.dart';
+import '../components/lateral_nav_bar.dart';
 
 class MapPage extends StatefulWidget {
  @override
@@ -27,23 +31,48 @@ class _MapPageState extends State<MapPage> {
     switch (index) {
       case 0:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const HomePage()));
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
         break;
       case 1:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => CatalogPage()));
+          context,
+          MaterialPageRoute(builder: (context) => CatalogPage()),
+        );
         break;
       case 2:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ProfilePage()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>  const ProfilePage()),
+        );
         break;
       case 3:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) =>  FavoritePage()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) =>  const FavoritePage()),
+        );
         break;
       case 4:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) =>  MapPage()));
+          context, MaterialPageRoute(builder: (context) =>  MapPage()));
+        break;
+      case 5:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Cinemas()),
+        );
+        break;
+      default:
         break;
     }
   }
@@ -146,6 +175,25 @@ class _MapPageState extends State<MapPage> {
       UserPosition = LatLng(position.latitude, position.longitude);
     });
   }
+  
+  //Rota
+  List<LatLng> _routePoints = [];
+
+  Future<List<LatLng>> getRouteCoordinates(LatLng start, LatLng destination) async{
+    final accessToken = 'pk.eyJ1IjoiYWxpbmVtdmNvbGl2ZWlyYSIsImEiOiJjbTBkd25vNWQwa2ZpMmlvaDNxYnV6bTZnIn0.RDeMz7KKOsvxycaO5kvSNg';
+    final url = Uri.parse('https://api.mapbox.com/directions/v5/mapbox/driving/${start.longitude},${start.latitude};${destination.longitude},${destination.latitude}?geometries=geojson&access_token=pk.eyJ1IjoiYWxpbmVtdmNvbGl2ZWlyYSIsImEiOiJjbTBkd25vNWQwa2ZpMmlvaDNxYnV6bTZnIn0.RDeMz7KKOsvxycaO5kvSNg');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200){
+      final data = jsonDecode(response.body);
+      final List<LatLng> coordinates = (data['routes'][0]['geometry']['coordinates'] as List).map((coord) => LatLng(coord[1], coord[0])).toList();
+      return coordinates;
+    }
+    else {
+      throw Exception('Falha ao carregar a rota: ${response.statusCode}');
+    }
+  }
+
 
   @override
   void initState(){
@@ -157,6 +205,29 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(0, 32, 31, 31),
+        title: const Text('MovieBox'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
+        centerTitle: true,
+        actions: const [],
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.menu), // Ícone do menu
+              onPressed: () {
+                Scaffold.of(context).openDrawer(); // Abre o Drawer ao clicar
+              },
+            );
+          },
+        ),
+      ),
+      drawer: LateralNavBar(
+        // Adiciona o Drawer com o LateralNavBar
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+      ),
       body: UserPosition == null? CircularProgressIndicator() :
       Column(
         children: [
@@ -187,6 +258,15 @@ class _MapPageState extends State<MapPage> {
                       Builder(builder: (context) => Icon(Icons.location_on, color: Colors.red, size: 40.0)),
                     ),
                     // Adicione outros marcadores aqui
+                  ],
+                ),
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: _routePoints,
+                      strokeWidth: 4.0,
+                      color: Colors.black,
+                    ),
                   ],
                 ),
               ],
@@ -224,9 +304,18 @@ class _MapPageState extends State<MapPage> {
                             title: Text(cinemas[index]['name']),
                             subtitle: Text(cinemas[index]['address']),
                             trailing: Icon(Icons.arrow_forward_ios),
-                            onTap: () {
-                              // Navegação para a página do cinema
-                              // Implemente conforme necessário
+                            onTap: () async{
+                              if (UserPosition != null) {
+                                final start = UserPosition!;
+                                final end = LatLng(
+                                  double.parse(cinemas[index]['coordinates']['latitude']), 
+                                  double.parse(cinemas[index]['coordinates']['longitude'])
+                                );
+                                List<LatLng> routeCoordinates = await getRouteCoordinates(start, end);
+                                setState(() {
+                                  _routePoints = routeCoordinates;
+                                });
+                              }
                             },
                           ),
                         ), 
@@ -248,23 +337,19 @@ class _MapPageState extends State<MapPage> {
                         ),
                       ),
                       onPressed: (){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpCinemas()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => Cinemas()));
                       },
                       child: const Text(
-                        "Adicionar Cinema",
+                        "Lista de Cinemas",
                         style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                       ),
                     ),
-                )
+                ),
+                SizedBox(height: 12),
               ],
             ),
           ),
         ],
-      ),
-    
-    bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

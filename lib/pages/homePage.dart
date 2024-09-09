@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:testes/pages/myMovies.dart';
+import 'Cinemas.dart';
 import 'FavoritePage.dart';
 import 'CatalogPage.dart';
 import 'MoviePage.dart';
@@ -61,6 +62,13 @@ class _HomePageState extends State<HomePage> {
           MaterialPageRoute(
               builder: (context) =>
                   const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Cinemas()),
         );
         break;
       default:
