@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'Cinemas.dart';
 import 'HomePage.dart';
 import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'MapPage.dart';
 import 'CatalogPage.dart';
-import '../components/bottom_nav_bar.dart';
+import '../components/lateral_nav_bar.dart';
+import 'myMovies.dart';
 
 class ReviewsPage extends StatefulWidget {
   const ReviewsPage({super.key});
@@ -16,7 +18,7 @@ class ReviewsPage extends StatefulWidget {
 }
 
 class _ReviewsPageState extends State<ReviewsPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 0; // Índice atual da página
   String? _selectedOption;
   bool _isFavorite = false;
   bool _isWatched = false;
@@ -44,24 +46,38 @@ class _ReviewsPageState extends State<ReviewsPage> {
 
     switch (index) {
       case 0:
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => const HomePage()));
         break;
       case 1:
-        Navigator.push(
+        Navigator.pushReplacement(
             context, MaterialPageRoute(builder: (context) => CatalogPage()));
         break;
       case 2:
-        Navigator.push(context,
+        Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const ProfilePage()));
         break;
       case 3:
-        Navigator.push(context,
+        Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const FavoritePage()));
         break;
       case 4:
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MapPage()));
+        break;
+      case 5:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const MapPage()));
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Cinemas()),
+        );
         break;
     }
   }
@@ -85,7 +101,6 @@ class _ReviewsPageState extends State<ReviewsPage> {
         .doc(movieId);
 
     try {
-      // Adicionar aos favoritos com título e caminho do poster
       await favoriteRef.set({
         'title': title,
         'poster_path': posterPath,
@@ -98,7 +113,6 @@ class _ReviewsPageState extends State<ReviewsPage> {
         ),
       );
     } catch (error) {
-      // Exibe a mensagem de erro detalhada
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erro ao adicionar aos favoritos: $error'),
@@ -129,7 +143,6 @@ class _ReviewsPageState extends State<ReviewsPage> {
     };
 
     try {
-      // Salva a avaliação no Firestore
       await _firestore
           .collection('users')
           .doc(_currentUser?.uid)
@@ -152,17 +165,12 @@ class _ReviewsPageState extends State<ReviewsPage> {
         ),
       );
 
-      // Adiciona o filme aos favoritos, se marcado
       if (_isFavorite) {
         await _addToFavorites(movieId, title, posterPath);
       }
 
-      // Retorna à página anterior
       Navigator.pop(context);
     } catch (error) {
-      print('GIOVANNA CATCH');
-
-      // Exibe a mensagem de erro detalhada
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Erro ao salvar a avaliação: $error'),
@@ -175,16 +183,15 @@ class _ReviewsPageState extends State<ReviewsPage> {
   @override
   Widget build(BuildContext context) {
     final movieId = ModalRoute.of(context)?.settings.arguments as String? ?? '';
-    final movieTitle = 'Título do Filme'; // Ajuste para o título correto
-    final moviePosterUrl =
+    const movieTitle = 'Título do Filme'; // Ajuste para o título correto
+    const moviePosterUrl =
         '/path/to/poster'; // Ajuste para o caminho do poster correto
 
     if (movieId.isEmpty) {
-      // Exibe uma mensagem de erro se o movieId estiver vazio
       return Scaffold(
         backgroundColor: Colors.black,
         body: Center(
-          child: const Text(
+          child: Text(
             'ID do filme não encontrado.',
             style: TextStyle(color: Colors.white, fontSize: 18),
           ),
@@ -195,13 +202,24 @@ class _ReviewsPageState extends State<ReviewsPage> {
     return Scaffold(
       backgroundColor: Colors.black,
       appBar: AppBar(
-        backgroundColor: Colors.black,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
+        title: const Text('Perfil'),
+        backgroundColor: Colors.transparent,
+        iconTheme: const IconThemeData(color: Colors.white),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.menu),
+            onPressed: () {
+              Scaffold.of(context).openDrawer();
+            },
+          ),
+        ],
+      ),
+      drawer: LateralNavBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          _onItemTapped(index);
+          Navigator.pop(context); // Fecha o drawer ao selecionar um item
+        },
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
@@ -318,60 +336,41 @@ class _ReviewsPageState extends State<ReviewsPage> {
                   _saveReview(movieId, movieTitle, moviePosterUrl);
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.red,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                  ),
+                  backgroundColor: Colors
+                      .red, // Fix the named parameter to 'backgroundColor'
                   padding:
                       const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
                 ),
                 child: const Text(
                   'Salvar Avaliação',
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(fontSize: 16),
                 ),
               ),
             ),
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-      ),
     );
   }
 
   Widget _buildToggleRow(String label, IconData icon, bool value,
-      Color activeColor, VoidCallback onChanged) {
+      Color activeColor, VoidCallback onPressed) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Icon(
-          icon,
-          color: value ? activeColor : _inactiveColor,
-          size: 24.0,
+        IconButton(
+          icon: Icon(
+            icon,
+            color: value ? activeColor : _inactiveColor,
+            size: 30,
+          ),
+          onPressed: onPressed,
         ),
-        const SizedBox(width: 8),
         Text(
           label,
           style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.white,
+            fontSize: 18,
+            color: value ? activeColor : _inactiveColor,
           ),
-        ),
-        const Spacer(),
-        Switch(
-          value: value,
-          onChanged: (bool newValue) {
-            onChanged();
-          },
-          activeColor: activeColor,
-          inactiveThumbColor: _inactiveColor,
         ),
       ],
     );

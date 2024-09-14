@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../components/movie_detail_page.dart';
+import 'Cinemas.dart';
 import 'HomePage.dart';
 import 'CatalogPage.dart';
 import 'ProfilePage.dart';
 import 'MapPage.dart';
-import '../components/bottom_nav_bar.dart';
+import '../components/lateral_nav_bar.dart';
+import 'myMovies.dart'; // Importar o componente da barra lateral
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({super.key});
@@ -39,7 +41,7 @@ class _FavoritePageState extends State<FavoritePage> {
       } else {
         print('Favoritos encontrados: ${snapshot.docs.length}');
         return snapshot.docs
-            .map((doc) => doc.data() as Map<String, dynamic>)
+            .map((doc) => doc.data())
             .toList();
       }
     } catch (e) {
@@ -66,7 +68,7 @@ class _FavoritePageState extends State<FavoritePage> {
       case 0:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) =>  const HomePage()),
         );
         break;
       case 1:
@@ -78,7 +80,7 @@ class _FavoritePageState extends State<FavoritePage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
+          MaterialPageRoute(builder: (context) =>  const ProfilePage()),
         );
         break;
       case 3:
@@ -87,7 +89,22 @@ class _FavoritePageState extends State<FavoritePage> {
       case 4:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MapPage()),
+          MaterialPageRoute(builder: (context) =>  MapPage()),
+        );
+        break;
+      case 5:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Cinemas()),
         );
         break;
     }
@@ -96,6 +113,10 @@ class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: LateralNavBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+      ),
       backgroundColor: Colors.black,
       appBar: AppBar(
         title: const Text('Favoritos'),
@@ -166,10 +187,6 @@ class _FavoritePageState extends State<FavoritePage> {
             },
           );
         },
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

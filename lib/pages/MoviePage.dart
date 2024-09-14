@@ -1,19 +1,24 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:testes/pages/commentsPage.dart';
+import 'Cinemas.dart';
+import 'HomePage.dart';
 import 'ReviewsPage.dart';
 import 'HomePage.dart';
 import 'CatalogPage.dart';
 import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'MapPage.dart';
+import '../components/movie_image.dart';
 import '../components/movie_title.dart';
 import '../components/movie_details.dart';
 import '../components/section_title.dart';
+import '../components/genre_chips.dart';
 import '../components/movie_cast.dart';
 import '../components/movie_synopsis.dart';
-import '../components/bottom_nav_bar.dart';
-import 'commentsPage.dart';
+import '../components/lateral_nav_bar.dart';
+import 'myMovies.dart';
 
 class MoviePage extends StatefulWidget {
   final String movieId;
@@ -49,6 +54,7 @@ class _MoviePageState extends State<MoviePage> {
   }
 
   void _onItemTapped(int index) {
+    Navigator.pop(context); // Fechar o Drawer após a navegação
     setState(() {
       _currentIndex = index;
     });
@@ -81,7 +87,21 @@ class _MoviePageState extends State<MoviePage> {
       case 4:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MapPage()),
+          MaterialPageRoute(builder: (context) => MapPage()),
+        );
+        break;
+      case 5:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Cinemas()),
         );
         break;
       default:
@@ -147,6 +167,23 @@ class _MoviePageState extends State<MoviePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          'Detalhes do Filme',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.black,
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: Icon(Icons.menu),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+          ),
+        ),
+      ),
+      drawer: LateralNavBar(
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
+      ),
       body: SafeArea(
         child: FutureBuilder<DocumentSnapshot>(
           future: _movieData,
@@ -162,6 +199,12 @@ class _MoviePageState extends State<MoviePage> {
             final movie = snapshot.data!.data() as Map<String, dynamic>;
             final posterPath = movie['poster_path'] ?? '';
             final posterUrl = 'https://image.tmdb.org/t/p/w500$posterPath';
+
+            final genresString = movie['genres'] ?? '';
+            final genresList = genresString.split('-');
+
+            final castString = movie['credits'] ?? '';
+            final castList = castString.split('-');
 
             return Container(
               color: const Color.fromARGB(255, 240, 3, 3),
@@ -199,6 +242,9 @@ class _MoviePageState extends State<MoviePage> {
                                 ),
                               ),
                             ),
+                            const SizedBox(
+                              height: 10,
+                            ),
                             MovieTitle(
                                 title: movie['title'] ?? 'Título do Filme'),
                             MovieDetails(
@@ -215,10 +261,16 @@ class _MoviePageState extends State<MoviePage> {
                                   'Sinopse não disponível.',
                             ),
                             const SectionTitle(title: "Gênero"),
+                            GenreChips(
+                              genres: genresList,
+                            ),
                             const SectionTitle(title: "Elenco"),
                             MovieCast(
-                              cast: List<String>.from(
-                                  movie['cast'] ?? ['Elenco não disponível.']),
+                              cast: castList,
+                            ),
+                            const SizedBox(
+                              height: 64,
+                              width: 30,
                             ),
                             const SectionTitle(title: "Avaliações"),
                             StreamBuilder(
@@ -384,12 +436,11 @@ class _MoviePageState extends State<MoviePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _navigateToReviews,
-        child: const Icon(Icons.add),
         backgroundColor: Colors.red,
-      ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+        ),
       ),
     );
   }

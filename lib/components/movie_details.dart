@@ -6,17 +6,20 @@ class MovieDetails extends StatelessWidget {
   final String rating;
 
   const MovieDetails(
-      {super.key, required this.duration, required this.year, required this.rating});
+      {super.key,
+      required this.duration,
+      required this.year,
+      required this.rating});
 
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 27, horizontal: 100),
+        margin: const EdgeInsets.symmetric(vertical: 27, horizontal: 20),
         child: Row(
           children: [
-            buildImage("https://i.imgur.com/1tMFzp8.png",
-                width: 18, height: 18, margin: const EdgeInsets.only(right: 4)),
+            buildIcon(Icons.access_time, // Duração
+                margin: const EdgeInsets.only(right: 8)),
             Text(
               duration,
               style: const TextStyle(
@@ -26,6 +29,8 @@ class MovieDetails extends StatelessWidget {
               ),
             ),
             const Spacer(),
+            buildIcon(Icons.calendar_today, // Ano
+                margin: const EdgeInsets.only(right: 8)),
             Text(
               year,
               style: const TextStyle(
@@ -34,8 +39,9 @@ class MovieDetails extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            buildImage("https://i.imgur.com/1tMFzp8.png",
-                width: 16, height: 16, margin: const EdgeInsets.only(right: 4)),
+            const Spacer(),
+            buildIcon(Icons.star, // Nota
+                margin: const EdgeInsets.only(right: 4)),
             Text(
               rating,
               style: const TextStyle(
@@ -50,13 +56,14 @@ class MovieDetails extends StatelessWidget {
     );
   }
 
-  Widget buildImage(String url,
-      {double width = 32, double height = 32, EdgeInsets? margin}) {
+  Widget buildIcon(IconData iconData, {EdgeInsets? margin}) {
     return Container(
       margin: margin,
-      width: width,
-      height: height,
-      child: Image.network(url, fit: BoxFit.fill),
+      child: Icon(
+        iconData,
+        color: const Color(0xFFFAFAFA),
+        size: 18,
+      ),
     );
   }
 }

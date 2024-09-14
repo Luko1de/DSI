@@ -8,7 +8,7 @@ class SectionTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(left: 36, bottom: 13),
+      margin: const EdgeInsets.only(left: 35, bottom: 13),
       child: Text(
         title,
         style: const TextStyle(

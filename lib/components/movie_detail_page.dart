@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class MovieDetailPage extends StatelessWidget {
   final Map<String, dynamic> movieData;
 
-  const MovieDetailPage({Key? key, required this.movieData}) : super(key: key);
+  const MovieDetailPage({super.key, required this.movieData});
 
   @override
   Widget build(BuildContext context) {

@@ -14,7 +14,7 @@ class MovieCast extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Text(
                   actor,
-                  style: TextStyle(fontSize: 16, color: Colors.white),
+                  style: const TextStyle(fontSize: 16, color: Colors.white),
                 ),
               ))
           .toList(),

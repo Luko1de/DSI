@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:testes/pages/myMovies.dart';
+import 'Cinemas.dart';
 import 'FavoritePage.dart';
 import 'CatalogPage.dart';
 import 'MoviePage.dart';
 import 'ProfilePage.dart';
 import 'MapPage.dart';
-import '../components/bottom_nav_bar.dart';
+import 'myMovies.dart';
+import '../components/lateral_nav_bar.dart'; // Certifique-se de importar o LateralNavBar corretamente
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -16,7 +19,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0; // Índice da barra de navegação inferior
+  int _currentIndex = 0; // Índice da barra de navegação lateral
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   void _onItemTapped(int index) {
@@ -40,19 +43,32 @@ class _HomePageState extends State<HomePage> {
       case 2:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
+          MaterialPageRoute(builder: (context) =>  const ProfilePage()),
         );
         break;
       case 3:
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const FavoritePage()),
+          MaterialPageRoute(builder: (context) =>  const FavoritePage()),
         );
         break;
       case 4:
         Navigator.push(
+          context, MaterialPageRoute(builder: (context) =>  MapPage()));
+        break;
+      case 5:
+        Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const MapPage()),
+          MaterialPageRoute(
+              builder: (context) =>
+                  const MeusFilmesPage()), // Adicione a nova tela
+        );
+        break;
+      case 6:
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Cinemas()),
         );
         break;
       default:
@@ -75,6 +91,21 @@ class _HomePageState extends State<HomePage> {
         titleTextStyle: const TextStyle(color: Colors.white, fontSize: 20),
         centerTitle: true,
         actions: const [],
+        leading: Builder(
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(Icons.menu), // Ícone do menu
+              onPressed: () {
+                Scaffold.of(context).openDrawer(); // Abre o Drawer ao clicar
+              },
+            );
+          },
+        ),
+      ),
+      drawer: LateralNavBar(
+        // Adiciona o Drawer com o LateralNavBar
+        currentIndex: _currentIndex,
+        onTap: _onItemTapped,
       ),
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -148,10 +179,6 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavBar(
-        currentIndex: _currentIndex,
-        onTap: _onItemTapped,
-      ),
     );
   }
 
@@ -162,15 +189,15 @@ class _HomePageState extends State<HomePage> {
           .collection('movies')
           .where('genres', isGreaterThanOrEqualTo: genreId)
           .where('genres',
-              isLessThanOrEqualTo: genreId + '\uf8ff') // Filtro por string
+              isLessThanOrEqualTo: '$genreId\uf8ff') // Filtro por string
           .limit(10)
           .get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         }
         if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-          return Center(
+          return const Center(
               child: Text('Nenhum filme encontrado.',
                   style: TextStyle(color: Colors.white)));
         }
@@ -227,8 +254,8 @@ class _HomePageState extends State<HomePage> {
                         'https://image.tmdb.org/t/p/w500$posterPath', // Adiciona URL base do TMDB
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return Image.asset('assets/default_poster.png',
-                              fit: BoxFit.cover);
+                          return Image.asset(
+                              'assets/placeholder.png'); // Adicione seu caminho de placeholder
                         },
                       ),
                     ),
@@ -236,7 +263,6 @@ class _HomePageState extends State<HomePage> {
                 );
               },
             ),
-            SizedBox(height: screenHeight * 0.05),
           ],
         );
       },
