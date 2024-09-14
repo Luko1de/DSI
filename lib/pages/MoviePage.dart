@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'HomePage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'ReviewsPage.dart';
+import 'HomePage.dart';
 import 'CatalogPage.dart';
 import 'ProfilePage.dart';
 import 'FavoritePage.dart';
 import 'MapPage.dart';
-// import '../components/movie_image.dart';
 import '../components/movie_title.dart';
 import '../components/movie_details.dart';
 import '../components/section_title.dart';
-// import '../components/genre_chips.dart';
 import '../components/movie_cast.dart';
 import '../components/movie_synopsis.dart';
 import '../components/bottom_nav_bar.dart';
+import 'commentsPage.dart';
 
 class MoviePage extends StatefulWidget {
   final String movieId;
@@ -27,6 +27,7 @@ class MoviePage extends StatefulWidget {
 class _MoviePageState extends State<MoviePage> {
   int _currentIndex = 1;
   late Future<DocumentSnapshot> _movieData;
+  final User? _currentUser = FirebaseAuth.instance.currentUser;
 
   @override
   void initState() {
@@ -45,7 +46,6 @@ class _MoviePageState extends State<MoviePage> {
         settings: RouteSettings(arguments: widget.movieId),
       ),
     );
-    ;
   }
 
   void _onItemTapped(int index) {
@@ -89,6 +89,61 @@ class _MoviePageState extends State<MoviePage> {
     }
   }
 
+  void _showEditReviewDialog(
+      String reviewId, Map<String, dynamic> currentReview) {
+    final TextEditingController _ratingController =
+        TextEditingController(text: currentReview['rating']?.toString() ?? '');
+    final TextEditingController _commentController =
+        TextEditingController(text: currentReview['comment'] ?? '');
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Editar Comentário'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: _ratingController,
+                decoration: const InputDecoration(labelText: 'Nota'),
+                keyboardType: TextInputType.number,
+              ),
+              TextField(
+                controller: _commentController,
+                decoration: const InputDecoration(labelText: 'Comentário'),
+                keyboardType: TextInputType.text,
+              ),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                await FirebaseFirestore.instance
+                    .collection('movies')
+                    .doc(widget.movieId)
+                    .collection('reviews')
+                    .doc(reviewId)
+                    .update({
+                  'rating': _ratingController.text,
+                  'comment': _commentController.text,
+                });
+                Navigator.of(context).pop();
+              },
+              child: const Text('Salvar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,21 +152,19 @@ class _MoviePageState extends State<MoviePage> {
           future: _movieData,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             }
 
             if (!snapshot.hasData || !snapshot.data!.exists) {
-              return Center(child: Text('Filme não encontrado.'));
+              return const Center(child: Text('Filme não encontrado.'));
             }
 
             final movie = snapshot.data!.data() as Map<String, dynamic>;
-
-            // Use o poster_path diretamente, assumindo que é uma URL parcial
             final posterPath = movie['poster_path'] ?? '';
             final posterUrl = 'https://image.tmdb.org/t/p/w500$posterPath';
 
             return Container(
-              color: const Color(0xFFFFFFFF),
+              color: const Color.fromARGB(255, 240, 3, 3),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -162,15 +215,162 @@ class _MoviePageState extends State<MoviePage> {
                                   'Sinopse não disponível.',
                             ),
                             const SectionTitle(title: "Gênero"),
-                            //GenreChips(
-                            //genres: List<String>.from(movie['genres'] ?? []),
-                            //),
                             const SectionTitle(title: "Elenco"),
                             MovieCast(
                               cast: List<String>.from(
                                   movie['cast'] ?? ['Elenco não disponível.']),
                             ),
-                            const SizedBox(height: 64),
+                            const SectionTitle(title: "Avaliações"),
+                            StreamBuilder(
+                              stream: FirebaseFirestore.instance
+                                  .collection('movies')
+                                  .doc(widget.movieId)
+                                  .collection('reviews')
+                                  .snapshots(),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const Center(
+                                      child: CircularProgressIndicator());
+                                }
+
+                                if (snapshot.hasError) {
+                                  return Center(
+                                      child: Text(
+                                          'Erro ao carregar comentários: ${snapshot.error}'));
+                                }
+
+                                if (!snapshot.hasData ||
+                                    snapshot.data!.docs.isEmpty) {
+                                  return const Center(
+                                      child: Text(
+                                          'Nenhum comentário disponível.'));
+                                }
+
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    ...snapshot.data!.docs.map((doc) {
+                                      final review =
+                                          doc.data() as Map<String, dynamic>;
+                                      return GestureDetector(
+                                        onTap: () {
+                                          _showEditReviewDialog(doc.id, review);
+                                        },
+                                        child: Dismissible(
+                                          key: Key(doc.id),
+                                          direction:
+                                              DismissDirection.endToStart,
+                                          onDismissed: (direction) async {
+                                            await FirebaseFirestore.instance
+                                                .collection('movies')
+                                                .doc(widget.movieId)
+                                                .collection('reviews')
+                                                .doc(doc.id)
+                                                .delete();
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(
+                                              const SnackBar(
+                                                  content: Text(
+                                                      'Comentário excluído')),
+                                            );
+                                          },
+                                          background: Container(
+                                            color: Colors.red,
+                                            child: const Align(
+                                              alignment: Alignment.centerRight,
+                                              child: Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 20),
+                                                child: Icon(
+                                                  Icons.delete,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 8),
+                                            child: Card(
+                                              color: const Color.fromARGB(
+                                                  255, 20, 20, 20),
+                                              child: ListTile(
+                                                leading: const Icon(
+                                                  Icons.person,
+                                                  size: 40,
+                                                  color: Colors.red,
+                                                ),
+                                                title: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      review['email'] ??
+                                                          'Email não disponível',
+                                                      style: const TextStyle(
+                                                          color:
+                                                              Colors.white70),
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      'Nota: ${review['rating'] ?? 'N/A'}',
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 4),
+                                                    Text(
+                                                      review['comment'] ??
+                                                          'Comentário não disponível',
+                                                      style: const TextStyle(
+                                                          color: Colors.white),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    const SizedBox(height: 20),
+                                    Center(
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  AllReviewsPage(
+                                                      movieId: widget.movieId),
+                                            ),
+                                          );
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              Colors.red, // Cor do botão
+                                          iconColor:
+                                              Colors.white, // Cor do ícone
+                                          textStyle: const TextStyle(
+                                              fontSize: 16), // Tamanho do texto
+                                        ),
+                                        child: const Text(
+                                          'Ver mais',
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
                           ],
                         ),
                       ),
@@ -182,17 +382,14 @@ class _MoviePageState extends State<MoviePage> {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _navigateToReviews,
+        child: const Icon(Icons.add),
+        backgroundColor: Colors.red,
+      ),
       bottomNavigationBar: BottomNavBar(
         currentIndex: _currentIndex,
         onTap: _onItemTapped,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _navigateToReviews,
-        backgroundColor: Colors.red,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
       ),
     );
   }

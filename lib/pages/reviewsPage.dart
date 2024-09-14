@@ -38,6 +38,8 @@ class _ReviewsPageState extends State<ReviewsPage> {
   void _onItemTapped(int index) {
     setState(() {
       _currentIndex = index;
+      print("gi@costa.com${_currentUser}");
+      print("FirebaseFirestore$_firestore");
     });
 
     switch (index) {
@@ -123,6 +125,7 @@ class _ReviewsPageState extends State<ReviewsPage> {
       'isFavorite': _isFavorite,
       'isWatched': _isWatched,
       'comment': _commentController.text,
+      'email': _currentUser?.email
     };
 
     try {
@@ -132,6 +135,13 @@ class _ReviewsPageState extends State<ReviewsPage> {
           .doc(_currentUser?.uid)
           .collection('reviews')
           .doc(movieId)
+          .set(review);
+
+      await _firestore
+          .collection('movies')
+          .doc(movieId)
+          .collection('reviews')
+          .doc(UniqueKey().toString())
           .set(review);
 
       // Exibe um SnackBar confirmando o salvamento da avaliação
@@ -150,6 +160,8 @@ class _ReviewsPageState extends State<ReviewsPage> {
       // Retorna à página anterior
       Navigator.pop(context);
     } catch (error) {
+      print('GIOVANNA CATCH');
+
       // Exibe a mensagem de erro detalhada
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
