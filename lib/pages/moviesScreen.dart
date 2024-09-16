@@ -41,12 +41,12 @@ class _TelaFilmeState extends State<TelaFilme> {
             MaterialPageRoute(builder: (context) => const ProfilePage()));
         break;
       case 3:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) =>  FavoritePage()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => FavoritePage()));
         break;
       case 4:
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) =>  MapPage()));
+            context, MaterialPageRoute(builder: (context) => MapPage()));
         break;
       case 5:
         Navigator.push(
@@ -59,8 +59,7 @@ class _TelaFilmeState extends State<TelaFilme> {
       case 6:
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => Cinemas()),
+          MaterialPageRoute(builder: (context) => Cinemas()),
         );
         break;
     }
@@ -129,7 +128,8 @@ class _TelaFilmeState extends State<TelaFilme> {
                               "Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.",
                         ),
                         const SectionTitle(title: "Gênero"),
-                        const GenreChips(genres: ["Aventura", "Ficção Científica"]),
+                        const GenreChips(
+                            genres: ["Aventura", "Ficção Científica"]),
                         const SectionTitle(title: "Elenco"),
                         const MovieCast(
                           cast: [
@@ -144,7 +144,8 @@ class _TelaFilmeState extends State<TelaFilme> {
                             "Christopher Walken"
                           ],
                         ),
-                        const SizedBox(height: 64), // Add some spacing at the bottom
+                        const SizedBox(
+                            height: 64), // Add some spacing at the bottom
                       ],
                     ),
                   ),

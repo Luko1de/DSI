@@ -34,41 +34,34 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   int _currentIndex = 2;
 
-  void _onItemTapped(int index) {
+  void _onItemTapped(int index) async {
+    // Fecha o drawer antes de iniciar a navegação
+    Navigator.pop(context);
+
     setState(() {
       _currentIndex = index;
     });
 
+    // Navegação com pushReplacement para substituir a página atual
     switch (index) {
       case 0:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => const HomePage()));
         break;
       case 1:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => CatalogPage()),
-        );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => CatalogPage()));
         break;
       case 2:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ProfilePage()),
-        );
+        // Não faz nada pois já está na página de Perfil
         break;
       case 3:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const FavoritePage()),
-        );
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const FavoritePage()));
         break;
       case 4:
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MapPage()),
-        );
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MapPage()));
         break;
       case 5:
         Navigator.push(
@@ -81,8 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
       case 6:
         Navigator.push(
           context,
-          MaterialPageRoute(
-              builder: (context) => Cinemas()),
+          MaterialPageRoute(builder: (context) => Cinemas()),
         );
         break;
       default:
@@ -94,23 +86,23 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Perfil'),
-        backgroundColor: Colors.transparent,
-        iconTheme: const IconThemeData(color: Colors.white),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.menu),
-            onPressed: () {
-              Scaffold.of(context).openDrawer();
-            },
+        title: Center(
+          child: Text(
+            'Perfil',
+            style: TextStyle(
+              color: Colors.white, // Define a cor do texto como branco
+              fontSize: 24, // Ajuste o tamanho da fonte conforme necessário
+            ), // Define a cor do texto como branco
           ),
-        ],
+        ),
+        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+        iconTheme:
+            const IconThemeData(color: Color.fromARGB(255, 250, 245, 245)),
       ),
       drawer: LateralNavBar(
         currentIndex: _currentIndex,
         onTap: (index) {
           _onItemTapped(index);
-          Navigator.pop(context); // Fecha o drawer ao selecionar um item
         },
       ),
       body: SafeArea(

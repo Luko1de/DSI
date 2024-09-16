@@ -176,6 +176,7 @@ class _MoviePageState extends State<MoviePage> {
         leading: Builder(
           builder: (context) => IconButton(
             icon: Icon(Icons.menu),
+            color: Colors.white,
             onPressed: () => Scaffold.of(context).openDrawer(),
           ),
         ),
