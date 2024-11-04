@@ -12,7 +12,7 @@
         
         <meta-data
             android:name="com.mapbox.token"
-            android:value="pk.eyJ1IjoiYWxpbmVtdmNvbGl2ZWlyYSIsImEiOiJjbTBjZXpkZXEwMXNnMmtvcmgxOWQyZjlnIn0.W2B71McaMJjbmnAPk3hWgQ"
+            android:value="MAPBOXTOKEN"
         />
         
         <activity
